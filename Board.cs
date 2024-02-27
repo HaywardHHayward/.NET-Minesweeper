@@ -88,6 +88,9 @@ internal class Board {
 
     public void FlagTile(int row, int col) {
         Tile tile = _board[row, col];
+        if (tile.IsChecked) {
+            return;
+        }
         if (tile.IsFlagged) {
             Debug.Assert(_flaggedTiles.Contains(tile));
             _flaggedTiles.Remove(tile);
@@ -166,9 +169,11 @@ internal class Board {
                                   ? c.ToString().PadRight(colLength + boardPadding)
                                   : _board[r, c].ToStringMonochrome().PadRight(colLength + boardPadding));
             }
-            output.AppendLine();
+            if (r != RowAmount - 1) {
+                output.AppendLine();
+            }
         }
-        return output.ToString().TrimEnd();
+        return output.ToString();
     }
 
     public string ToStringColoredText() {
@@ -202,9 +207,11 @@ internal class Board {
                                              _board[r, c].ToStringMonochrome().Length)));
                 }
             }
-            output.AppendLine();
+            if (r != RowAmount - 1) {
+                output.AppendLine();
+            }
         }
-        return output.ToString().TrimEnd();
+        return output.ToString();
     }
 
     public string ToStringMonochromeKeyboard() {
@@ -213,9 +220,11 @@ internal class Board {
             for (int c = 0; c < ColumnAmount; c++) {
                 output.Append(_board[r, c].ToStringMonochrome() + " ");
             }
-            output.AppendLine();
+            if (r != RowAmount - 1) {
+                output.AppendLine();
+            }
         }
-        return output.ToString().TrimEnd();
+        return output.ToString();
     }
 
     public string ToStringColoredKeyboard() {
@@ -224,8 +233,10 @@ internal class Board {
             for (int c = 0; c < ColumnAmount; c++) {
                 output.Append(_board[r, c].ToStringColored() + " ");
             }
-            output.AppendLine();
+            if (r != RowAmount - 1) {
+                output.AppendLine();
+            }
         }
-        return output.ToString().TrimEnd();
+        return output.ToString();
     }
 }

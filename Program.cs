@@ -15,11 +15,15 @@ internal static partial class Program {
             Initialization();
         }
         Console.Clear();
+        EnsureWindowSize();
+        Console.Clear();
         if (_minesweeper.interfaceMode == Minesweeper.InterfaceMode.Text) {
             TextPlay();
         }
         else {
             KeyboardPlay();
         }
+        Position = (0, 0);
+        Console.Clear();
     }
 }

@@ -102,27 +102,25 @@ internal static partial class Program {
                 Console.Clear();
                 ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
                 Position = (0, _minesweeper.RowAmount + 2);
-                Console.WriteLine("You hit a mine! You lost! Press any key to exit...");
+                Console.WriteLine("Oops! You hit a mine! You lost! Press any key to exit...");
                 Console.ReadKey();
                 return;
             }
-            else {
-                _minesweeper.FlagTile(row, col);
-                if (!_minesweeper.wonGame) {
-                    continue;
-                }
-                Console.Clear();
-                ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
-                Position = (0, _minesweeper.RowAmount + 2);
-                Console.WriteLine("You successfully flagged all the mines! You win! Press any key to exit...");
-                Console.ReadKey();
-                return;
+            _minesweeper.FlagTile(row, col);
+            if (!_minesweeper.wonGame) {
+                continue;
             }
+            Console.Clear();
+            ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
+            Position = (0, _minesweeper.RowAmount + 2);
+            Console.WriteLine("You flagged all the mines! You win! Press any key to exit...");
+            Console.ReadKey();
+            return;
         }
     }
 
     private static void KeyboardPlay() {
-        ConsoleElement tutorial = new ConsoleElement(0, _minesweeper.RowAmount + 1, "Press C to check and F to flag.");
+        ConsoleElement tutorial = new ConsoleElement(0, _minesweeper.RowAmount + 2, "Press C to check and F to flag.");
         ConsoleElement won = new ConsoleElement(0, _minesweeper.RowAmount + 1,
                                                 "You flagged all the mines! You won! Press any key to exit...");
         ConsoleElement lost = new ConsoleElement(0, _minesweeper.RowAmount + 1,
@@ -131,9 +129,15 @@ internal static partial class Program {
         InitializeKeyHandler();
         ConsoleInterface.PrintConsoleElement(tutorial);
         while (playing) {
+            ConsoleElement minesRemaining = new ConsoleElement(0, _minesweeper.RowAmount + 1,
+                                                               $"Number of mines remaining (according to flag count): {
+                                                                   _minesweeper.MineAmount - _minesweeper.FlagAmount}");
             ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
+            ConsoleInterface.PrintConsoleElement(minesRemaining);
             ConsoleKeyInfo info = Console.ReadKey(true);
             ConsoleInterface.DoKeyInput(info);
+            ConsoleInterface.ClearConsoleElement(_minesweeper.consoleElement);
+            ConsoleInterface.ClearConsoleElement(minesRemaining);
         }
         ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
         ConsoleInterface.ClearConsoleElement(tutorial);

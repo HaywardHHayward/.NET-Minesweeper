@@ -76,9 +76,8 @@ internal sealed class Tile: IEquatable<Tile> {
         get => Convert.ToByte((_tileProperties & Masks.SurroundingMask) >> Masks.SurroundingOffset);
         internal set {
             if (value >= 9) {
-                throw new ArgumentOutOfRangeException(nameof(SurroundingMines),
-                                                      $"Value of {nameof(SurroundingMines)
-                                                      } must be in between 0 and 8 inclusive. Value supplied: {value}");
+                throw new ArgumentOutOfRangeException(nameof(SurroundingMines), $"Value of {nameof(SurroundingMines)
+                } must be in between 0 and 8 inclusive. Value supplied: {value}");
             }
             _tileProperties &= Masks.SurroundingInverse;
             _tileProperties |= Convert.ToByte(value << Masks.SurroundingOffset);

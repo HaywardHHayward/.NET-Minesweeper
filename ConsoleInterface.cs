@@ -87,44 +87,22 @@ public static class ConsoleInterface {
         }
         CursorPosition = originalCursor;
     }
-
-    public static ConsoleElement MoveConsoleElement(int x, int y, ConsoleElement element) {
-        (int x, int y) originalCursor = CursorPosition;
-        ClearConsoleElement(element);
-        ConsoleElement newElement = new ConsoleElement(x, y, element.Message);
-        PrintConsoleElement(newElement);
-        CursorPosition = originalCursor;
-        return newElement;
-    }
-
-    public static ConsoleElement<T> MoveConsoleElement<T>(int x, int y, ConsoleElement<T> element) {
-        (int x, int y) originalCursor = CursorPosition;
-        ClearConsoleElement(element);
-        ConsoleElement<T> newElement = new ConsoleElement<T>(x, y, element.obj, element.stringHandler);
-        PrintConsoleElement(newElement);
-        CursorPosition = originalCursor;
-        return newElement;
-    }
 }
 
 public readonly struct ConsoleElement(int x, int y, string message) {
-    public string Message { get; init; } = message;
+    public string Message { get; } = message;
 
-    public int ElementX { get; init; } = x;
+    public int ElementX { get; } = x;
 
-    public int ElementY { get; init; } = y;
+    public int ElementY { get; } = y;
 }
 
 public readonly struct ConsoleElement<T>(int x, int y, T obj, ConsoleElement<T>.StringDelegate method) {
     public delegate string StringDelegate(T obj);
 
-    public readonly StringDelegate stringHandler = method;
+    public int ElementX { get; } = x;
 
-    public readonly T obj = obj;
+    public int ElementY { get; } = y;
 
-    public int ElementX { get; init; } = x;
-
-    public int ElementY { get; init; } = y;
-
-    public string Message => stringHandler(obj);
+    public string Message => method(obj);
 }

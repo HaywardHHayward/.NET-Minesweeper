@@ -52,7 +52,7 @@ public class Minesweeper {
 
     public void CheckTile(int row, int col) {
         _board.CheckTile(row, col);
-        if (_board[row, col].IsMine) {
+        if (_board[row, col].IsMine && !_board[row, col].IsFlagged) {
             lostGame = true;
         }
     }
@@ -62,10 +62,6 @@ public class Minesweeper {
         if (_board.FlaggedAllMines) {
             wonGame = true;
         }
-    }
-
-    public bool IsMine(int row, int col) {
-        return _board[row, col].IsMine;
     }
 
     public bool IsFlagged(int row, int col) {

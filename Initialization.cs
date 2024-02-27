@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace Minesweeper;
 
 internal static partial class Program {
@@ -23,7 +25,7 @@ internal static partial class Program {
                 if (!result) {
                     throw new ArgumentException(
                         $"Invalid argument(s), the first three arguments must be positive integers. Inputted arguments: {
-                            args[..2]}");
+                            string.Join(", ", args)}");
                 }
             }
             switch (args.Length) {
@@ -85,10 +87,8 @@ internal static partial class Program {
                 return;
             }
             if ((cMode != null && iMode == null) || (cMode == null && iMode != null)) {
-                if (cMode != null) {
-                    throw new ArgumentNullException(nameof(iMode), "Both mode values must be provided.");
-                }
-                throw new ArgumentNullException(nameof(cMode), "Both mode values must be provided.");
+                throw new ArgumentNullException(cMode != null ? nameof(iMode) : nameof(cMode),
+                                                "Both mode values must be provided.");
             }
             (cMode, iMode) = InterfaceInitialization();
             _minesweeper = new Minesweeper(boardInputs[0], boardInputs[1], boardInputs[2], cMode.Value, iMode.Value);
@@ -212,5 +212,73 @@ internal static partial class Program {
             }
         } while (!validInterf);
         return (color, interf);
+    }
+
+    private static void EnsureWindowSize() {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+            if (_minesweeper.interfaceMode == Minesweeper.InterfaceMode.Text) {
+                Console.SetWindowSize(
+                    int.Max(80, _minesweeper.ColumnAmount * (_minesweeper.ColumnAmount - 2).ToString().Length + 1),
+                    _minesweeper.RowAmount + 10);
+            }
+            else {
+                Console.SetWindowSize(int.Max(80, _minesweeper.ColumnAmount * 2), _minesweeper.RowAmount + 2);
+            }
+        }
+        else {
+            ConsoleElement expandMessage = new ConsoleElement(0, 0, "");
+            if (_minesweeper.interfaceMode == Minesweeper.InterfaceMode.Text) {
+                bool SmallWidth() {
+                    return Console.WindowWidth <
+                           int.Max(
+                               80, _minesweeper.ColumnAmount * (_minesweeper.ColumnAmount - 2).ToString().Length + 1);
+                }
+
+                bool SmallHeight() {
+                    return Console.WindowHeight < _minesweeper.RowAmount + 10;
+                }
+
+                while (SmallWidth() || SmallHeight()) {
+                    ConsoleInterface.ClearConsoleElement(expandMessage);
+                    if (SmallWidth() && SmallHeight()) {
+                        expandMessage =
+                            new ConsoleElement(0, 0, "Please expand your screen both horizontally and vertically.");
+                    }
+                    else if (SmallWidth()) {
+                        expandMessage = new ConsoleElement(0, 0, "Please expand your screen horizontally.");
+                    }
+                    else {
+                        expandMessage = new ConsoleElement(0, 0, "Please expand your screen vertically.");
+                    }
+                    ConsoleInterface.PrintConsoleElement(expandMessage);
+                    Thread.Sleep(10);
+                }
+            }
+            else {
+                bool SmallWidth() {
+                    return Console.WindowWidth < int.Max(80, _minesweeper.ColumnAmount * 2);
+                }
+
+                bool SmallHeight() {
+                    return Console.WindowHeight < _minesweeper.RowAmount + 2;
+                }
+
+                while (SmallWidth() || SmallHeight()) {
+                    ConsoleInterface.ClearConsoleElement(expandMessage);
+                    if (SmallWidth() && SmallHeight()) {
+                        expandMessage =
+                            new ConsoleElement(0, 0, "Please expand your screen both horizontally and vertically.");
+                    }
+                    else if (SmallWidth()) {
+                        expandMessage = new ConsoleElement(0, 0, "Please expand your screen horizontally.");
+                    }
+                    else {
+                        expandMessage = new ConsoleElement(0, 0, "Please expand your screen vertically.");
+                    }
+                    ConsoleInterface.PrintConsoleElement(expandMessage);
+                    Thread.Sleep(10);
+                }
+            }
+        }
     }
 }
