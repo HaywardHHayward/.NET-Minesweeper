@@ -47,8 +47,14 @@ public class Minesweeper {
     public int ColumnAmount => _board.ColumnAmount;
     public int MineAmount => _board.MineAmount;
     public int FlagAmount => _board.FlagAmount;
-    public bool IsValidRow(int row) => _board.IsValidRow(row);
-    public bool IsValidColumn(int col) => _board.IsValidColumn(col);
+
+    public bool IsValidRow(int row) {
+        return _board.IsValidRow(row);
+    }
+
+    public bool IsValidColumn(int col) {
+        return _board.IsValidColumn(col);
+    }
 
     public void CheckTile(int row, int col) {
         _board.CheckTile(row, col);
