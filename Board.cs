@@ -21,15 +21,14 @@ internal class Board {
         ColumnAmount = col;
         if (mines <= 0 || mines >= RowAmount * ColumnAmount - 8) {
             throw new ArgumentOutOfRangeException(nameof(mines),
-                                                  $"{nameof(mines)} must be in between 1 and ({row * col - 8
-                                                  }) exclusive. Valued supplied: {mines}");
+                $"{nameof(mines)} must be in between 1 and ({row * col - 8
+                }) exclusive. Valued supplied: {mines}");
         }
         MineAmount = mines;
         _board = new Tile[RowAmount, ColumnAmount];
-        for (int r = 0; r < RowAmount; r++) {
-            for (int c = 0; c < ColumnAmount; c++) {
-                _board[r, c] = new Tile(r, c);
-            }
+        for (int r = 0; r < RowAmount; r++)
+        for (int c = 0; c < ColumnAmount; c++) {
+            _board[r, c] = new Tile(r, c);
         }
         _flaggedTiles = new HashSet<Tile>(MineAmount);
         _minedTiles = new HashSet<Tile>(MineAmount);
@@ -156,7 +155,7 @@ internal class Board {
         // We can do this by subtracting two from the ColumnAmount, since it'll skip over the last value.
         int colLength = int.Max(ColumnAmount - 2, 0).ToString().Length;
         const int boardPadding = 1;
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new();
         for (int r = -1; r < RowAmount; r++) {
             if (r == -1) {
                 output.Append(' ', rowLength + boardPadding);
@@ -166,8 +165,8 @@ internal class Board {
             }
             for (int c = 0; c < ColumnAmount; c++) {
                 output.Append(r == -1
-                                  ? c.ToString().PadRight(colLength + boardPadding)
-                                  : _board[r, c].ToStringMonochrome().PadRight(colLength + boardPadding));
+                    ? c.ToString().PadRight(colLength + boardPadding)
+                    : _board[r, c].ToStringMonochrome().PadRight(colLength + boardPadding));
             }
             if (r != RowAmount - 1) {
                 output.AppendLine();
@@ -183,7 +182,7 @@ internal class Board {
         // We can do this by subtracting two from the ColumnAmount, since it'll skip over the last value.
         int colLength = int.Max(ColumnAmount - 2, 0).ToString().Length;
         const int boardPadding = 1;
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new();
         for (int r = -1; r < RowAmount; r++) {
             if (r != -1) {
                 output.Append(r.ToString().PadLeft(rowLength).PadRight(rowLength + boardPadding));
@@ -195,10 +194,11 @@ internal class Board {
                 if (r == -1) {
                     output.Append(c.ToString().PadRight(colLength + boardPadding));
                 }
-                else {
+                else
                     // Pastel adds extra characters to the string, which we need to account for when formatting,
                     // which is why we add Tile.ToStringColored().Length - Tile.ToString().Length to the 
-                    // padding width, so as to maintain consistency with Board.ToString().
+                    // padding width, to maintain consistency with Board.ToString().
+                {
                     output.Append(_board[r, c]
                                   .ToStringColored()
                                   .PadRight(colLength +
@@ -215,7 +215,7 @@ internal class Board {
     }
 
     public string ToStringMonochromeKeyboard() {
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new();
         for (int r = 0; r < RowAmount; r++) {
             for (int c = 0; c < ColumnAmount; c++) {
                 output.Append(_board[r, c].ToStringMonochrome() + " ");
@@ -228,7 +228,7 @@ internal class Board {
     }
 
     public string ToStringColoredKeyboard() {
-        StringBuilder output = new StringBuilder();
+        StringBuilder output = new();
         for (int r = 0; r < RowAmount; r++) {
             for (int c = 0; c < ColumnAmount; c++) {
                 output.Append(_board[r, c].ToStringColored() + " ");

@@ -17,7 +17,7 @@ internal static partial class Program {
         Console.Clear();
         EnsureWindowSize();
         Console.Clear();
-        if (_minesweeper.interfaceMode == Minesweeper.InterfaceMode.Text) {
+        if (_minesweeper.GameInterfaceMode == Minesweeper.InterfaceMode.Text) {
             TextPlay();
         }
         else {

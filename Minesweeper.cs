@@ -5,34 +5,42 @@ namespace Minesweeper;
 public class Minesweeper {
     #region ColorMode enum
 
-    public enum ColorMode { None, Monochrome, Colored }
+    public enum ColorMode {
+        None,
+        Monochrome,
+        Colored
+    }
 
     #endregion
 
     #region InterfaceMode enum
 
-    public enum InterfaceMode { None, Text, Keyboard }
+    public enum InterfaceMode {
+        None,
+        Text,
+        Keyboard
+    }
 
     #endregion
 
     private readonly Board _board;
-    internal readonly ConsoleElement<Board> consoleElement;
+    internal readonly ConsoleElement<Board> ConsoleElement;
 
-    public readonly InterfaceMode interfaceMode;
-    public bool lostGame;
-    public bool wonGame;
+    public readonly InterfaceMode GameInterfaceMode;
+    public bool LostGame;
+    public bool WonGame;
 
     public Minesweeper(int row, int col, int mines, ColorMode cMode, InterfaceMode iMode) {
         _board = new Board(row, col, mines);
-        interfaceMode = iMode;
-        consoleElement = cMode switch {
-            ColorMode.Monochrome => interfaceMode switch {
+        GameInterfaceMode = iMode;
+        ConsoleElement = cMode switch {
+            ColorMode.Monochrome => GameInterfaceMode switch {
                 InterfaceMode.Text => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringMonochromeText()),
                 InterfaceMode.Keyboard => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringMonochromeKeyboard()),
                 InterfaceMode.None => throw new UnreachableException(),
                 _ => throw new UnreachableException()
             },
-            ColorMode.Colored => interfaceMode switch {
+            ColorMode.Colored => GameInterfaceMode switch {
                 InterfaceMode.Text => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringColoredText()),
                 InterfaceMode.Keyboard => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringColoredKeyboard()),
                 InterfaceMode.None => throw new UnreachableException(),
@@ -59,14 +67,14 @@ public class Minesweeper {
     public void CheckTile(int row, int col) {
         _board.CheckTile(row, col);
         if (_board[row, col].IsMine && !_board[row, col].IsFlagged) {
-            lostGame = true;
+            LostGame = true;
         }
     }
 
     public void FlagTile(int row, int col) {
         _board.FlagTile(row, col);
         if (_board.FlaggedAllMines) {
-            wonGame = true;
+            WonGame = true;
         }
     }
 

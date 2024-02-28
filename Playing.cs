@@ -8,7 +8,7 @@ internal static partial class Program {
             go_back:
             Position = (0, 0);
             Console.Clear();
-            ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
+            ConsoleInterface.PrintConsoleElement(_minesweeper.ConsoleElement);
             Position = (0, _minesweeper.RowAmount + 1);
             Console.WriteLine($"Mines remaining (according to number of tiles flagged): {
                 _minesweeper.MineAmount - _minesweeper.FlagAmount}");
@@ -96,22 +96,22 @@ internal static partial class Program {
                     goto go_back;
                 }
                 _minesweeper.CheckTile(row, col);
-                if (!_minesweeper.lostGame) {
+                if (!_minesweeper.LostGame) {
                     continue;
                 }
                 Console.Clear();
-                ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
+                ConsoleInterface.PrintConsoleElement(_minesweeper.ConsoleElement);
                 Position = (0, _minesweeper.RowAmount + 2);
                 Console.WriteLine("Oops! You hit a mine! You lost! Press any key to exit...");
                 Console.ReadKey();
                 return;
             }
             _minesweeper.FlagTile(row, col);
-            if (!_minesweeper.wonGame) {
+            if (!_minesweeper.WonGame) {
                 continue;
             }
             Console.Clear();
-            ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
+            ConsoleInterface.PrintConsoleElement(_minesweeper.ConsoleElement);
             Position = (0, _minesweeper.RowAmount + 2);
             Console.WriteLine("You flagged all the mines! You win! Press any key to exit...");
             Console.ReadKey();
@@ -122,51 +122,51 @@ internal static partial class Program {
     private static void KeyboardPlay() {
         ConsoleKey currentCheck = ConsoleKey.C;
         ConsoleKey currentFlag = ConsoleKey.F;
-        ConsoleElement tutorial = new ConsoleElement(0, _minesweeper.RowAmount + 2, $"Press {currentCheck
+        ConsoleElement tutorial = new(0, _minesweeper.RowAmount + 2, $"Press {currentCheck
             .ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
         ConsoleInterface.PrintConsoleElement(tutorial);
-        ConsoleElement won = new ConsoleElement(0, _minesweeper.RowAmount + 1,
-                                                "You flagged all the mines! You won! Press any key to exit...");
-        ConsoleElement lost = new ConsoleElement(0, _minesweeper.RowAmount + 1,
-                                                 "Oops! You hit a mine! You lost! Press any key to exit...");
+        ConsoleElement won = new(0, _minesweeper.RowAmount + 1,
+            "You flagged all the mines! You won! Press any key to exit...");
+        ConsoleElement lost = new(0, _minesweeper.RowAmount + 1,
+            "Oops! You hit a mine! You lost! Press any key to exit...");
         bool playing = true;
         InitializeKeyHandler();
         while (playing) {
             tutorial = new ConsoleElement(0, _minesweeper.RowAmount + 2, $"Press {currentCheck
                 .ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
             ConsoleInterface.PrintConsoleElement(tutorial);
-            ConsoleElement minesRemaining = new ConsoleElement(0, _minesweeper.RowAmount + 1,
-                                                               $"Number of mines remaining (according to flag count): {
-                                                                   _minesweeper.MineAmount - _minesweeper.FlagAmount}");
-            ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
+            ConsoleElement minesRemaining = new(0, _minesweeper.RowAmount + 1,
+                $"Number of mines remaining (according to flag count): {
+                    _minesweeper.MineAmount - _minesweeper.FlagAmount}");
+            ConsoleInterface.PrintConsoleElement(_minesweeper.ConsoleElement);
             ConsoleInterface.PrintConsoleElement(minesRemaining);
             ConsoleKeyInfo info = Console.ReadKey(true);
             ConsoleInterface.DoKeyInput(info);
-            ConsoleInterface.ClearConsoleElement(_minesweeper.consoleElement);
+            ConsoleInterface.ClearConsoleElement(_minesweeper.ConsoleElement);
             ConsoleInterface.ClearConsoleElement(minesRemaining);
             ConsoleInterface.ClearConsoleElement(tutorial);
         }
-        ConsoleInterface.PrintConsoleElement(_minesweeper.consoleElement);
-        ConsoleInterface.PrintConsoleElement(_minesweeper.wonGame ? won : lost);
+        ConsoleInterface.PrintConsoleElement(_minesweeper.ConsoleElement);
+        ConsoleInterface.PrintConsoleElement(_minesweeper.WonGame ? won : lost);
         Console.ReadKey();
         return;
 
         void InitializeKeyHandler() {
-            ConsoleInterface.keyHandlerTable[ConsoleKey.LeftArrow] = () => Position = (Position.x - 2, Position.y);
-            ConsoleInterface.keyHandlerTable[ConsoleKey.A] = () => Position = (Position.x - 2, Position.y);
-            ConsoleInterface.keyHandlerTable[ConsoleKey.RightArrow] = () =>
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.LeftArrow] = () => Position = (Position.x - 2, Position.y);
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.A] = () => Position = (Position.x - 2, Position.y);
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.RightArrow] = () =>
                 Position = (int.Min(Position.x + 2, (_minesweeper.ColumnAmount - 1) * 2), Position.y);
-            ConsoleInterface.keyHandlerTable[ConsoleKey.D] = () =>
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.D] = () =>
                 Position = (int.Min(Position.x + 2, (_minesweeper.ColumnAmount - 1) * 2), Position.y);
-            ConsoleInterface.keyHandlerTable[ConsoleKey.UpArrow] = () => Position = (Position.x, Position.y - 1);
-            ConsoleInterface.keyHandlerTable[ConsoleKey.W] = () => Position = (Position.x, Position.y - 1);
-            ConsoleInterface.keyHandlerTable[ConsoleKey.DownArrow] = () =>
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.UpArrow] = () => Position = (Position.x, Position.y - 1);
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.W] = () => Position = (Position.x, Position.y - 1);
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.DownArrow] = () =>
                 Position = (Position.x, int.Min(Position.y + 1, _minesweeper.RowAmount - 1));
-            ConsoleInterface.keyHandlerTable[ConsoleKey.D] = () =>
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.D] = () =>
                 Position = (Position.x, int.Min(Position.y + 1, _minesweeper.RowAmount - 1));
-            ConsoleInterface.keyHandlerTable[ConsoleKey.C] = CheckTile;
-            ConsoleInterface.keyHandlerTable[ConsoleKey.F] = FlagTile;
-            ConsoleInterface.keyHandlerTable[ConsoleKey.Tab] = ChangeCheckAndFlag;
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.C] = CheckTile;
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.F] = FlagTile;
+            ConsoleInterface.KeyHandlerTable[ConsoleKey.Tab] = ChangeCheckAndFlag;
         }
 
         void ChangeCheckAndFlag() {
@@ -203,10 +203,10 @@ internal static partial class Program {
             Console.WriteLine(newFlag.ToString());
             Console.WriteLine("Press any key to return to Minesweeper...");
             Console.ReadKey();
-            ConsoleInterface.keyHandlerTable[currentCheck] = () => { };
-            ConsoleInterface.keyHandlerTable[currentFlag] = () => { };
-            ConsoleInterface.keyHandlerTable[newCheck] = CheckTile;
-            ConsoleInterface.keyHandlerTable[newFlag] = FlagTile;
+            ConsoleInterface.KeyHandlerTable[currentCheck] = () => { };
+            ConsoleInterface.KeyHandlerTable[currentFlag] = () => { };
+            ConsoleInterface.KeyHandlerTable[newCheck] = CheckTile;
+            ConsoleInterface.KeyHandlerTable[newFlag] = FlagTile;
             currentCheck = newCheck;
             currentFlag = newFlag;
             Console.Clear();
@@ -216,7 +216,7 @@ internal static partial class Program {
             int row = Position.y;
             int col = Position.x / 2;
             _minesweeper.CheckTile(row, col);
-            if (_minesweeper.lostGame) {
+            if (_minesweeper.LostGame) {
                 playing = false;
             }
         }
@@ -225,7 +225,7 @@ internal static partial class Program {
             int row = Position.y;
             int col = Position.x / 2;
             _minesweeper.FlagTile(row, col);
-            if (_minesweeper.wonGame) {
+            if (_minesweeper.WonGame) {
                 playing = false;
             }
         }

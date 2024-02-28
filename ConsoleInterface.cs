@@ -7,12 +7,11 @@ public static class ConsoleInterface {
 
     #endregion
 
-    public static readonly Dictionary<ConsoleKey, KeyHandler>
-        keyHandlerTable = new Dictionary<ConsoleKey, KeyHandler>();
+    public static readonly Dictionary<ConsoleKey, KeyHandler> KeyHandlerTable = new();
 
     static ConsoleInterface() {
         foreach (ConsoleKey key in Enum.GetValues<ConsoleKey>()) {
-            keyHandlerTable.Add(key, () => { });
+            KeyHandlerTable.Add(key, () => { });
         }
     }
 
@@ -38,7 +37,7 @@ public static class ConsoleInterface {
 
     public static void DoKeyInput(ConsoleKeyInfo info) {
         ConsoleKey key = info.Key;
-        keyHandlerTable[key]();
+        KeyHandlerTable[key]();
     }
 
     public static void ClearLastLine() {
