@@ -1,6 +1,6 @@
 namespace Minesweeper;
 
-internal static partial class Program {
+public static partial class Program {
     private static Minesweeper _minesweeper = null!;
 
     private static void TextPlay() {

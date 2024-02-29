@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Minesweeper;
 
-internal class Board {
+internal sealed class Board {
     private readonly Tile[,] _board;
     private readonly HashSet<Tile> _flaggedTiles;
     private readonly HashSet<Tile> _minedTiles;
@@ -26,15 +26,16 @@ internal class Board {
         }
         MineAmount = mines;
         _board = new Tile[RowAmount, ColumnAmount];
-        for (int r = 0; r < RowAmount; r++)
-        for (int c = 0; c < ColumnAmount; c++) {
-            _board[r, c] = new Tile(r, c);
+        for (int r = 0; r < RowAmount; r++) {
+            for (int c = 0; c < ColumnAmount; c++) {
+                _board[r, c] = new Tile(r, c);
+            }
         }
         _flaggedTiles = new HashSet<Tile>(MineAmount);
         _minedTiles = new HashSet<Tile>(MineAmount);
     }
 
-    public bool FlaggedAllMines => FlagAmount == MineAmount && _flaggedTiles.SetEquals(_minedTiles);
+    public bool FlaggedAllMines => _flaggedTiles.SetEquals(_minedTiles);
 
     public Tile this[int i, int j] => _board[i, j];
 

@@ -1,6 +1,6 @@
 namespace Minesweeper;
 
-public static class ConsoleInterface {
+internal static class ConsoleInterface {
     #region Delegates
 
     public delegate void KeyHandler();
@@ -88,7 +88,7 @@ public static class ConsoleInterface {
     }
 }
 
-public readonly struct ConsoleElement(int x, int y, string message) {
+internal readonly struct ConsoleElement(int x, int y, string message) {
     public string Message { get; } = message;
 
     public int ElementX { get; } = x;
@@ -96,7 +96,7 @@ public readonly struct ConsoleElement(int x, int y, string message) {
     public int ElementY { get; } = y;
 }
 
-public readonly struct ConsoleElement<T>(int x, int y, T obj, ConsoleElement<T>.StringDelegate method) {
+internal readonly struct ConsoleElement<T>(int x, int y, T obj, ConsoleElement<T>.StringDelegate method) {
     public delegate string StringDelegate(T obj);
 
     public int ElementX { get; } = x;

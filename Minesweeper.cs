@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Minesweeper;
 
-public class Minesweeper {
+internal sealed class Minesweeper {
     #region ColorMode enum
 
     public enum ColorMode {
@@ -37,16 +37,16 @@ public class Minesweeper {
             ColorMode.Monochrome => GameInterfaceMode switch {
                 InterfaceMode.Text => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringMonochromeText()),
                 InterfaceMode.Keyboard => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringMonochromeKeyboard()),
-                InterfaceMode.None => throw new UnreachableException(),
+                InterfaceMode.None => throw new ArgumentException("Minesweeper cannot have an interface mode of None."),
                 _ => throw new UnreachableException()
             },
             ColorMode.Colored => GameInterfaceMode switch {
                 InterfaceMode.Text => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringColoredText()),
                 InterfaceMode.Keyboard => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringColoredKeyboard()),
-                InterfaceMode.None => throw new UnreachableException(),
+                InterfaceMode.None => throw new ArgumentException("Minesweeper cannot have an interface mode of None."),
                 _ => throw new UnreachableException()
             },
-            ColorMode.None => throw new UnreachableException(),
+            ColorMode.None => throw new ArgumentException("Minesweeper cannot have a color mode of None."),
             _ => throw new UnreachableException()
         };
     }
