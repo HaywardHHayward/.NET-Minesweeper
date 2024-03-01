@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Drawing;
 using Pastel;
 
@@ -142,7 +141,7 @@ internal sealed class Tile : IEquatable<Tile> {
             6 => "6".Pastel(Color.DarkCyan).PastelBg(Color.Gray),
             7 => "7".Pastel(Color.SaddleBrown).PastelBg(Color.Gray),
             8 => "8".Pastel(Color.LightGray).PastelBg(Color.Gray),
-            _ => throw new UnreachableException($"{nameof(Tile)}.{nameof(SurroundingMines)
+            _ => throw new ArgumentOutOfRangeException(nameof(SurroundingMines),$"{nameof(Tile)}.{nameof(SurroundingMines)
             } invariant has been violated. Impossible value has been achieved. Value of {nameof(SurroundingMines)}: {
                 SurroundingMines}")
         };

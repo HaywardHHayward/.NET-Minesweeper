@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text;
 
 namespace Minesweeper;
@@ -92,13 +91,16 @@ internal sealed class Board {
             return;
         }
         if (tile.IsFlagged) {
-            Debug.Assert(_flaggedTiles.Contains(tile));
+            if (!_flaggedTiles.Contains(tile)) {
+                throw new InvalidOperationException($"Flagged tile (Tile{tile.Row}, {tile.Column}) not in flagged tile set.");
+            }
             _flaggedTiles.Remove(tile);
             tile.IsFlagged = false;
         }
         else {
-            Debug.Assert(!_flaggedTiles.Contains(tile));
-            _flaggedTiles.Add(tile);
+            if (!_flaggedTiles.Add(tile)) {
+                throw new InvalidOperationException($"Unflagged tile (Tile{tile.Row}, {tile.Column}) already in flagged tile set.");
+            }
             tile.IsFlagged = true;
         }
     }
