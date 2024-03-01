@@ -20,8 +20,7 @@ internal sealed class Board {
         ColumnAmount = col;
         if (mines <= 0 || mines >= RowAmount * ColumnAmount - 8) {
             throw new ArgumentOutOfRangeException(nameof(mines),
-                $"{nameof(mines)} must be in between 1 and ({row * col - 8
-                }) exclusive. Valued supplied: {mines}");
+                $"{nameof(mines)} must be in between 1 and ({row * col - 8}) exclusive. Valued supplied: {mines}");
         }
         MineAmount = mines;
         _board = new Tile[RowAmount, ColumnAmount];
@@ -48,7 +47,7 @@ internal sealed class Board {
     private void SetAllMines(int row, int col) {
         Random rand = _seed.HasValue ? new Random(_seed.Value) : new Random();
         while (_minedTiles.Count < MineAmount) {
-            new_tile:
+        new_tile:
             int randRow = rand.Next(RowAmount);
             int randColumn = rand.Next(ColumnAmount);
             for (int r = -1; r <= 1; r++) {

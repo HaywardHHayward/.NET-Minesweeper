@@ -14,7 +14,7 @@ internal sealed class Tile : IEquatable<Tile> {
     // the tile with a straight conversion, i.e. 0b0000 is zero, 0b0001 is one, so on and so forth.
     private byte _tileProperties;
 
-    internal Tile(int row, int col) {
+    public Tile(int row, int col) {
         Row = row;
         Column = col;
     }
@@ -75,8 +75,8 @@ internal sealed class Tile : IEquatable<Tile> {
         get => Convert.ToByte((_tileProperties & Masks.SurroundingMask) >> Masks.SurroundingOffset);
         internal set {
             if (value >= 9) {
-                throw new ArgumentOutOfRangeException(nameof(SurroundingMines), $"Value of {nameof(SurroundingMines)
-                } must be in between 0 and 8 inclusive. Value supplied: {value}");
+                throw new ArgumentOutOfRangeException(nameof(SurroundingMines),
+                    $"Value of {nameof(SurroundingMines)} must be in between 0 and 8 inclusive. Value supplied: {value}");
             }
             _tileProperties &= Masks.SurroundingInverse;
             _tileProperties |= Convert.ToByte(value << Masks.SurroundingOffset);
@@ -142,9 +142,7 @@ internal sealed class Tile : IEquatable<Tile> {
             7 => "7".Pastel(Color.SaddleBrown).PastelBg(Color.Gray),
             8 => "8".Pastel(Color.LightGray).PastelBg(Color.Gray),
             _ => throw new ArgumentOutOfRangeException(nameof(SurroundingMines),
-                $"{nameof(Tile)}.{nameof(SurroundingMines)
-                } invariant has been violated. Impossible value has been achieved. Value of {nameof(SurroundingMines)}: {
-                    SurroundingMines}")
+                $"{nameof(Tile)}.{nameof(SurroundingMines)} invariant has been violated. Impossible value has been achieved. Value of {nameof(SurroundingMines)}: {SurroundingMines}")
         };
     }
 

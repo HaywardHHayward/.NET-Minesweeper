@@ -22,7 +22,7 @@ internal sealed class Minesweeper {
     #endregion
 
     private readonly Board _board;
-    internal readonly ConsoleElement<Board> ConsoleElement;
+    public readonly ConsoleElement<Board> ConsoleElement;
 
     public readonly InterfaceMode GameInterfaceMode;
     public bool LostGame;
