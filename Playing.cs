@@ -5,7 +5,7 @@ public static partial class Program {
 
     private static void TextPlay() {
         while (true) {
-            go_back:
+            restart_input:
             Position = (0, 0);
             Console.Clear();
             ConsoleInterface.PrintConsoleElement(_minesweeper.ConsoleElement);
@@ -46,7 +46,7 @@ public static partial class Program {
                 bool parsed = int.TryParse(input, out row);
                 if (!parsed) {
                     if (input == "back") {
-                        goto go_back;
+                        goto restart_input;
                     }
                     WriteStatusMessage("Invalid input. Enter a nonnegative integer.");
                     continue;
@@ -68,7 +68,7 @@ public static partial class Program {
                 bool parsed = int.TryParse(input, out col);
                 if (!parsed) {
                     if (input == "back") {
-                        goto go_back;
+                        goto restart_input;
                     }
                     WriteStatusMessage("Invalid input. Enter a nonnegative integer.");
                     continue;
@@ -86,14 +86,14 @@ public static partial class Program {
                 Console.WriteLine($"Cannot {(checkingNotFlagging ? "check" : "flag")
                 } a tile which has already been checked. Press any key to retry.");
                 Console.ReadKey();
-                goto go_back;
+                goto restart_input;
             }
             if (checkingNotFlagging) {
                 if (_minesweeper.IsFlagged(row, col)) {
                     Console.WriteLine(
                         "Cannot check a tile which has been flagged. Unflag the tile if you wish to check it. Press any key to retry.");
                     Console.ReadKey();
-                    goto go_back;
+                    goto restart_input;
                 }
                 _minesweeper.CheckTile(row, col);
                 if (!_minesweeper.LostGame) {
@@ -122,9 +122,6 @@ public static partial class Program {
     private static void KeyboardPlay() {
         ConsoleKey currentCheck = ConsoleKey.C;
         ConsoleKey currentFlag = ConsoleKey.F;
-        ConsoleElement tutorial = new(0, _minesweeper.RowAmount + 2, $"Press {currentCheck
-            .ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
-        ConsoleInterface.PrintConsoleElement(tutorial);
         ConsoleElement won = new(0, _minesweeper.RowAmount + 1,
             "You flagged all the mines! You won! Press any key to exit...");
         ConsoleElement lost = new(0, _minesweeper.RowAmount + 1,
@@ -132,14 +129,14 @@ public static partial class Program {
         bool playing = true;
         InitializeKeyHandler();
         while (playing) {
-            tutorial = new ConsoleElement(0, _minesweeper.RowAmount + 2, $"Press {currentCheck
+            ConsoleElement tutorial = new(0, _minesweeper.RowAmount + 2, $"Press {currentCheck
                 .ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
             ConsoleInterface.PrintConsoleElement(tutorial);
             ConsoleElement minesRemaining = new(0, _minesweeper.RowAmount + 1,
                 $"Number of mines remaining (according to flag count): {
                     _minesweeper.MineAmount - _minesweeper.FlagAmount}");
-            ConsoleInterface.PrintConsoleElement(_minesweeper.ConsoleElement);
             ConsoleInterface.PrintConsoleElement(minesRemaining);
+            ConsoleInterface.PrintConsoleElement(_minesweeper.ConsoleElement);
             ConsoleKeyInfo info = Console.ReadKey(true);
             ConsoleInterface.DoKeyInput(info);
             ConsoleInterface.ClearConsoleElement(_minesweeper.ConsoleElement);

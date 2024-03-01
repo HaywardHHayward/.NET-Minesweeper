@@ -92,14 +92,16 @@ internal sealed class Board {
         }
         if (tile.IsFlagged) {
             if (!_flaggedTiles.Contains(tile)) {
-                throw new InvalidOperationException($"Flagged tile (Tile{tile.Row}, {tile.Column}) not in flagged tile set.");
+                throw new InvalidOperationException(
+                    $"Flagged tile (Tile{tile.Row}, {tile.Column}) not in flagged tile set.");
             }
             _flaggedTiles.Remove(tile);
             tile.IsFlagged = false;
         }
         else {
             if (!_flaggedTiles.Add(tile)) {
-                throw new InvalidOperationException($"Unflagged tile (Tile{tile.Row}, {tile.Column}) already in flagged tile set.");
+                throw new InvalidOperationException(
+                    $"Unflagged tile (Tile{tile.Row}, {tile.Column}) already in flagged tile set.");
             }
             tile.IsFlagged = true;
         }
