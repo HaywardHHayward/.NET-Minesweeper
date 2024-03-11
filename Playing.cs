@@ -96,15 +96,23 @@ public static partial class Program {
                     goto restart_input;
                 }
                 s_minesweeper.CheckTile(row, col);
-                if (!s_minesweeper.LostGame) {
-                    continue;
+                if (s_minesweeper.LostGame) {
+                    Console.Clear();
+                    ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
+                    Position = (0, s_minesweeper.RowAmount + 2);
+                    Console.WriteLine("Oops! You hit a mine! You lost! Press any key to exit...");
+                    Console.ReadKey();
+                    return;
                 }
-                Console.Clear();
-                ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
-                Position = (0, s_minesweeper.RowAmount + 2);
-                Console.WriteLine("Oops! You hit a mine! You lost! Press any key to exit...");
-                Console.ReadKey();
-                return;
+                if (s_minesweeper.WonGame) {
+                    Console.Clear();
+                    ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
+                    Position = (0, s_minesweeper.RowAmount + 2);
+                    Console.WriteLine("You found all the mines! You win! Press any key to exit...");
+                    Console.ReadKey();
+                    return;
+                }
+                continue;
             }
             s_minesweeper.FlagTile(row, col);
             if (!s_minesweeper.WonGame) {
@@ -113,7 +121,7 @@ public static partial class Program {
             Console.Clear();
             ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
             Position = (0, s_minesweeper.RowAmount + 2);
-            Console.WriteLine("You flagged all the mines! You win! Press any key to exit...");
+            Console.WriteLine("You found all the mines! You win! Press any key to exit...");
             Console.ReadKey();
             return;
         }
@@ -123,7 +131,7 @@ public static partial class Program {
         ConsoleKey currentCheck = ConsoleKey.C;
         ConsoleKey currentFlag = ConsoleKey.F;
         ConsoleElement won = new(0, s_minesweeper.RowAmount + 1,
-            "You flagged all the mines! You won! Press any key to exit...");
+            "You found all the mines! You won! Press any key to exit...");
         ConsoleElement lost = new(0, s_minesweeper.RowAmount + 1,
             "Oops! You hit a mine! You lost! Press any key to exit...");
         bool playing = true;
@@ -212,7 +220,7 @@ public static partial class Program {
             int row = Position.y;
             int col = Position.x / 2;
             s_minesweeper.CheckTile(row, col);
-            if (s_minesweeper.LostGame) {
+            if (s_minesweeper.LostGame || s_minesweeper.WonGame) {
                 playing = false;
             }
         }

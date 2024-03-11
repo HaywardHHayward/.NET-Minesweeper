@@ -70,11 +70,14 @@ internal sealed class Minesweeper {
         if (_board[row, col].IsMine && !_board[row, col].IsFlagged) {
             LostGame = true;
         }
+        if (_board.FoundAllMines) {
+            WonGame = true;
+        }
     }
 
     public void FlagTile(int row, int col) {
         _board.FlagTile(row, col);
-        if (_board.FlaggedAllMines) {
+        if (_board.FoundAllMines) {
             WonGame = true;
         }
     }

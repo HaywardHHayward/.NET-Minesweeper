@@ -6,6 +6,7 @@ internal sealed class Board {
     private readonly Tile[,] _board;
     private readonly HashSet<Tile> _flaggedTiles;
     private readonly HashSet<Tile> _minedTiles;
+    private readonly HashSet<Tile> _uncheckedTiles;
     private readonly int? _seed;
     private bool _firstCheck = true;
 
@@ -24,16 +25,19 @@ internal sealed class Board {
         }
         MineAmount = mines;
         _board = new Tile[RowAmount, ColumnAmount];
+        _uncheckedTiles = new HashSet<Tile>(row * col);
         for (int r = 0; r < RowAmount; r++) {
             for (int c = 0; c < ColumnAmount; c++) {
-                _board[r, c] = new Tile(r, c);
+                Tile tile = new(r, c);
+                _board[r, c] = tile;
+                _uncheckedTiles.Add(tile);
             }
         }
         _flaggedTiles = new HashSet<Tile>(MineAmount);
         _minedTiles = new HashSet<Tile>(MineAmount);
     }
 
-    public bool FlaggedAllMines => _flaggedTiles.SetEquals(_minedTiles);
+    public bool FoundAllMines => _minedTiles.SetEquals(_uncheckedTiles);
 
     public Tile this[int i, int j] => _board[i, j];
 
@@ -145,9 +149,11 @@ internal sealed class Board {
         }
         if (tile is { IsMine: false, SurroundingMines: 0 }) {
             tile.IsChecked = true;
+            _uncheckedTiles.Remove(tile);
             CheckSurroundingTiles(row, col);
         }
         else {
+            _uncheckedTiles.Remove(tile);
             tile.IsChecked = true;
         }
     }
