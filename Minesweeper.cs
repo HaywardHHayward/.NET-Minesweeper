@@ -1,21 +1,17 @@
 namespace Minesweeper;
 
 internal sealed class Minesweeper {
-    #region ColorMode enum
     public enum ColorMode {
         None,
         Monochrome,
         Colored
     }
-    #endregion
 
-    #region InterfaceMode enum
     public enum InterfaceMode {
         None,
         Text,
         Keyboard
     }
-    #endregion
 
     private readonly Board _board;
     public readonly ConsoleElement<Board> ConsoleElement;

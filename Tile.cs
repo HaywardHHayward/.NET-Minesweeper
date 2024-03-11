@@ -83,14 +83,12 @@ internal sealed class Tile : IEquatable<Tile> {
         }
     }
 
-    #region IEquatable<Tile> Members
     public bool Equals(Tile? other) {
         return other != null &&
                _column == other._column &&
                _row == other._row &&
                _tileProperties == other._tileProperties;
     }
-    #endregion
 
     public string ToStringMonochrome() {
         if (IsFlagged) {
@@ -152,7 +150,6 @@ internal sealed class Tile : IEquatable<Tile> {
         return !Equals(left, right);
     }
 
-    #region Nested type: Masks
     private static class Masks {
         public const byte MineMask = 0b1 << 0;
         public const byte MineInverse = 0xFF ^ MineMask;
@@ -164,5 +161,4 @@ internal sealed class Tile : IEquatable<Tile> {
         public const byte SurroundingInverse = 0xFF ^ SurroundingMask;
         public const byte SurroundingOffset = 4;
     }
-    #endregion
 }
