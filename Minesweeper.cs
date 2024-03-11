@@ -15,10 +15,14 @@ internal sealed class Minesweeper {
 
     private readonly Board _board;
     public readonly ConsoleElement<Board> ConsoleElement;
-
     public readonly InterfaceMode GameInterfaceMode;
     public bool LostGame;
     public bool WonGame;
+
+    public int RowAmount => _board.RowAmount;
+    public int ColumnAmount => _board.ColumnAmount;
+    public int MineAmount => _board.MineAmount;
+    public int FlagAmount => _board.FlagAmount;
 
     public Minesweeper(int row, int col, int mines, ColorMode cMode, InterfaceMode iMode) {
         _board = new Board(row, col, mines);
@@ -43,11 +47,6 @@ internal sealed class Minesweeper {
                                                        $"Invalid InterfaceMode value. Provided value: {iMode}")
         };
     }
-
-    public int RowAmount => _board.RowAmount;
-    public int ColumnAmount => _board.ColumnAmount;
-    public int MineAmount => _board.MineAmount;
-    public int FlagAmount => _board.FlagAmount;
 
     public bool IsValidRow(int row) {
         return _board.IsValidRow(row);

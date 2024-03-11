@@ -5,12 +5,6 @@ internal static class ConsoleInterface {
 
     public static readonly Dictionary<ConsoleKey, KeyHandler> KeyHandlerTable = new();
 
-    static ConsoleInterface() {
-        foreach (ConsoleKey key in Enum.GetValues<ConsoleKey>()) {
-            KeyHandlerTable.Add(key, () => { });
-        }
-    }
-
     public static (int x, int y) CursorPosition {
         get => Console.GetCursorPosition();
         set {
@@ -28,6 +22,12 @@ internal static class ConsoleInterface {
                 newPosition.y = Console.BufferHeight;
             }
             Console.SetCursorPosition(newPosition.x, newPosition.y);
+        }
+    }
+
+    static ConsoleInterface() {
+        foreach (ConsoleKey key in Enum.GetValues<ConsoleKey>()) {
+            KeyHandlerTable.Add(key, () => { });
         }
     }
 

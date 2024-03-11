@@ -10,6 +10,12 @@ internal sealed class Board {
     private readonly HashSet<Tile> _uncheckedTiles;
     private bool _firstCheck = true;
 
+    public bool FoundAllMines => _minedTiles.SetEquals(_uncheckedTiles);
+    public int RowAmount { get; }
+    public int ColumnAmount { get; }
+    public int MineAmount { get; }
+    public int FlagAmount => _flaggedTiles.Count;
+
     public Board(int row, int col, int mines, int? seed = null) {
         _seed = seed;
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(row, nameof(row));
@@ -35,16 +41,7 @@ internal sealed class Board {
         _minedTiles = new HashSet<Tile>(MineAmount);
     }
 
-    public bool FoundAllMines => _minedTiles.SetEquals(_uncheckedTiles);
-
     public Tile this[int i, int j] => _board[i, j];
-
-    public int RowAmount { get; }
-
-    public int ColumnAmount { get; }
-    public int MineAmount { get; }
-
-    public int FlagAmount => _flaggedTiles.Count;
 
     private void SetAllMines(int row, int col) {
         Random rand = _seed.HasValue ? new Random(_seed.Value) : new Random();

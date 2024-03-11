@@ -14,11 +14,6 @@ internal sealed class Tile : IEquatable<Tile> {
     // the tile with a straight conversion, i.e. 0b0000 is zero, 0b0001 is one, so on and so forth.
     private byte _tileProperties;
 
-    public Tile(int row, int col) {
-        Row = row;
-        Column = col;
-    }
-
     public int Row {
         get => _row;
         init {
@@ -74,13 +69,15 @@ internal sealed class Tile : IEquatable<Tile> {
     public byte SurroundingMines {
         get => Convert.ToByte((_tileProperties & Masks.SurroundingMask) >> Masks.SurroundingOffset);
         internal set {
-            if (value >= 9) {
-                throw new ArgumentOutOfRangeException(nameof(SurroundingMines),
-                                                      $"Value of {nameof(SurroundingMines)} must be in between 0 and 8 inclusive. Value supplied: {value}");
-            }
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(value, 9, nameof(SurroundingMines));
             _tileProperties &= Masks.SurroundingInverse;
             _tileProperties |= Convert.ToByte(value << Masks.SurroundingOffset);
         }
+    }
+
+    public Tile(int row, int col) {
+        Row = row;
+        Column = col;
     }
 
     public bool Equals(Tile? other) {
