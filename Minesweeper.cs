@@ -2,23 +2,19 @@ namespace Minesweeper;
 
 internal sealed class Minesweeper {
     #region ColorMode enum
-
     public enum ColorMode {
         None,
         Monochrome,
         Colored
     }
-
     #endregion
 
     #region InterfaceMode enum
-
     public enum InterfaceMode {
         None,
         Text,
         Keyboard
     }
-
     #endregion
 
     private readonly Board _board;
@@ -37,18 +33,18 @@ internal sealed class Minesweeper {
                 InterfaceMode.Keyboard => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringMonochromeKeyboard()),
                 InterfaceMode.None => throw new ArgumentException("Minesweeper cannot have an interface mode of None."),
                 _ => throw new ArgumentOutOfRangeException(nameof(cMode),
-                    $"Invalid ColorMode value. Provided value: {cMode}")
+                                                           $"Invalid ColorMode value. Provided value: {cMode}")
             },
             ColorMode.Colored => GameInterfaceMode switch {
                 InterfaceMode.Text => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringColoredText()),
                 InterfaceMode.Keyboard => new ConsoleElement<Board>(0, 0, _board, s => s.ToStringColoredKeyboard()),
                 InterfaceMode.None => throw new ArgumentException("Minesweeper cannot have an interface mode of None."),
                 _ => throw new ArgumentOutOfRangeException(nameof(cMode),
-                    $"Invalid ColorMode value. Provided value: {cMode}")
+                                                           $"Invalid ColorMode value. Provided value: {cMode}")
             },
             ColorMode.None => throw new ArgumentException("Minesweeper cannot have a color mode of None."),
             _ => throw new ArgumentOutOfRangeException(nameof(iMode),
-                $"Invalid InterfaceMode value. Provided value: {iMode}")
+                                                       $"Invalid InterfaceMode value. Provided value: {iMode}")
         };
     }
 

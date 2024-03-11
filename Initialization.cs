@@ -10,8 +10,9 @@ public static partial class Program {
         "key-mode", "key mode", "key", "k-based", "k based", "k-mode", "k mode", "k"
     ];
 
-    private static readonly HashSet<string> TextSet =
-        ["text-based", "text based", "text-mode", "text mode", "text", "t-based", "t based", "t-mode", "t mode", "t"];
+    private static readonly HashSet<string> TextSet = [
+        "text-based", "text based", "text-mode", "text mode", "text", "t-based", "t based", "t-mode", "t mode", "t"
+    ];
 
     private static void InitializeWithArgs(string[] args) {
         int[] boardInputs = new int[3];
@@ -21,8 +22,8 @@ public static partial class Program {
             for (int i = 0; i < 3; i++) {
                 bool result = int.TryParse(args[i], out boardInputs[i]);
                 if (!result) {
-                    throw new ArgumentException(
-                        $"Invalid argument(s), the first three arguments must be positive integers. Inputted arguments: {string.Join(", ", args)}");
+                    throw new
+                        ArgumentException($"Invalid argument(s), the first three arguments must be positive integers. Inputted arguments: {string.Join(", ", args)}");
                 }
             }
             switch (args.Length) {
@@ -38,8 +39,8 @@ public static partial class Program {
                         cMode = Minesweeper.ColorMode.Monochrome;
                     }
                     else {
-                        throw new ArgumentException(
-                            $"Invalid argument(s). Failed to initialize ColorMode. Input: {args[3]}");
+                        throw new
+                            ArgumentException($"Invalid argument(s). Failed to initialize ColorMode. Input: {args[3]}");
                     }
                     if (keyboardOneWord.Contains(args[4].ToLower())) {
                         iMode = Minesweeper.InterfaceMode.Keyboard;
@@ -48,8 +49,8 @@ public static partial class Program {
                         iMode = Minesweeper.InterfaceMode.Text;
                     }
                     else {
-                        throw new ArgumentException(
-                            $"Invalid argument(s). Failed to initialize InterfaceMode. Input: {args[4]}");
+                        throw new
+                            ArgumentException($"Invalid argument(s). Failed to initialize InterfaceMode. Input: {args[4]}");
                     }
                     break;
                 }
@@ -57,13 +58,13 @@ public static partial class Program {
                     (cMode, iMode) = InterfaceInitialization();
                     break;
                 default:
-                    throw new ArgumentException(
-                        $"Invalid number of arguments. Minesweeper supports 0, 3, or 5 arguments. Number of arguments inputted: {args.Length}");
+                    throw new
+                        ArgumentException($"Invalid number of arguments. Minesweeper supports 0, 3, or 5 arguments. Number of arguments inputted: {args.Length}");
             }
         }
         else {
-            throw new ArgumentException(
-                $"Invalid number of arguments. Minesweeper supports 0, 3, or 5 arguments. Number of arguments inputted: {args.Length}");
+            throw new
+                ArgumentException($"Invalid number of arguments. Minesweeper supports 0, 3, or 5 arguments. Number of arguments inputted: {args.Length}");
         }
         Initialization(boardInputs, cMode, iMode);
     }
@@ -73,16 +74,16 @@ public static partial class Program {
         if (boardInputs != null) {
             if (boardInputs.Length != 3) {
                 throw new ArgumentOutOfRangeException(nameof(boardInputs),
-                    $"Board initialization must have three total members. Current count: {boardInputs.Length}");
+                                                      $"Board initialization must have three total members. Current count: {boardInputs.Length}");
             }
             if (cMode != null && iMode != null) {
                 s_minesweeper = new Minesweeper(boardInputs[0], boardInputs[1], boardInputs[2], cMode.Value,
-                    iMode.Value);
+                                                iMode.Value);
                 return;
             }
             if ((cMode != null && iMode == null) || (cMode == null && iMode != null)) {
                 throw new ArgumentNullException(cMode != null ? nameof(iMode) : nameof(cMode),
-                    "Both mode values must be provided.");
+                                                "Both mode values must be provided.");
             }
             (cMode, iMode) = InterfaceInitialization();
             s_minesweeper = new Minesweeper(boardInputs[0], boardInputs[1], boardInputs[2], cMode.Value, iMode.Value);
@@ -212,8 +213,7 @@ public static partial class Program {
         if (s_minesweeper.GameInterfaceMode == Minesweeper.InterfaceMode.Text) {
             bool SmallWidth() {
                 return Console.WindowWidth <
-                       int.Max(
-                           80, s_minesweeper.ColumnAmount * (s_minesweeper.ColumnAmount - 2).ToString().Length + 1);
+                       int.Max(80, s_minesweeper.ColumnAmount * (s_minesweeper.ColumnAmount - 2).ToString().Length + 1);
             }
 
             bool SmallHeight() {
@@ -222,8 +222,9 @@ public static partial class Program {
 
             while (SmallWidth() || SmallHeight()) {
                 ConsoleInterface.ClearConsoleElement(expandMessage);
-                expandMessage = new ConsoleElement(0, 0,
-                    $"Please expand your screen{(SmallWidth() && SmallHeight() ? " both horizontally and vertical" : SmallWidth() ? " horizontal" : " vertical")}ly.");
+                expandMessage =
+                    new ConsoleElement(0, 0,
+                                       $"Please expand your screen{(SmallWidth() && SmallHeight() ? " both horizontally and vertical" : SmallWidth() ? " horizontal" : " vertical")}ly.");
                 ConsoleInterface.PrintConsoleElement(expandMessage);
                 Thread.Sleep(10);
             }
@@ -239,8 +240,9 @@ public static partial class Program {
 
             while (SmallWidth() || SmallHeight()) {
                 ConsoleInterface.ClearConsoleElement(expandMessage);
-                expandMessage = new ConsoleElement(0, 0,
-                    $"Please expand your screen{(SmallWidth() && SmallHeight() ? " both horizontally and vertical" : SmallWidth() ? " horizontal" : " vertical")}ly.");
+                expandMessage =
+                    new ConsoleElement(0, 0,
+                                       $"Please expand your screen{(SmallWidth() && SmallHeight() ? " both horizontally and vertical" : SmallWidth() ? " horizontal" : " vertical")}ly.");
                 ConsoleInterface.PrintConsoleElement(expandMessage);
                 Thread.Sleep(10);
             }

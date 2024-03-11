@@ -34,13 +34,13 @@ public static partial class Program {
                                    Colored mode: {string.Join(", ", ColorSet)}
                                    Monochrome mode: {string.Join(", ", MonochromeSet)}
                                    Keyboard mode (both in-game and command line argument): {string.Join(", ", from word
-                                           in KeyboardSet where word.Split([' ', '-']).Length == 1 select word)}
+                                                    in KeyboardSet where word.Split([' ', '-']).Length == 1 select word)}
                                    Keyboard mode (only in-game): {string.Join(", ", from word
-                                           in KeyboardSet where word.Split([' ', '-']).Length > 1 select word)}
+                                                                                      in KeyboardSet where word.Split([' ', '-']).Length > 1 select word)}
                                    Text mode (both in-game and command line argument): {string.Join(", ", from word
-                                           in TextSet where word.Split([' ', '-']).Length == 1 select word)}
+                                                    in TextSet where word.Split([' ', '-']).Length == 1 select word)}
                                    Text mode (only in-game): {string.Join(", ", from word
-                                           in KeyboardSet where word.Split([' ', '-']).Length > 1 select word)}
+                                                                                  in KeyboardSet where word.Split([' ', '-']).Length > 1 select word)}
                                """);
             return;
         }
@@ -65,8 +65,7 @@ public static partial class Program {
         catch (Exception e) {
             Console.Clear();
             Position = StartPosition;
-            Console.WriteLine(
-                $"Minesweeper has experienced a fatal error. Error: {e.Message}\nMinesweeper will now exit following any key press...");
+            Console.WriteLine($"Minesweeper has experienced a fatal error. Error: {e.Message}\nMinesweeper will now exit following any key press...");
             Console.ReadKey();
         }
         Position = StartPosition;

@@ -76,7 +76,7 @@ internal sealed class Tile : IEquatable<Tile> {
         internal set {
             if (value >= 9) {
                 throw new ArgumentOutOfRangeException(nameof(SurroundingMines),
-                    $"Value of {nameof(SurroundingMines)} must be in between 0 and 8 inclusive. Value supplied: {value}");
+                                                      $"Value of {nameof(SurroundingMines)} must be in between 0 and 8 inclusive. Value supplied: {value}");
             }
             _tileProperties &= Masks.SurroundingInverse;
             _tileProperties |= Convert.ToByte(value << Masks.SurroundingOffset);
@@ -84,14 +84,12 @@ internal sealed class Tile : IEquatable<Tile> {
     }
 
     #region IEquatable<Tile> Members
-
     public bool Equals(Tile? other) {
         return other != null &&
                _column == other._column &&
                _row == other._row &&
                _tileProperties == other._tileProperties;
     }
-
     #endregion
 
     public string ToStringMonochrome() {
@@ -142,7 +140,7 @@ internal sealed class Tile : IEquatable<Tile> {
             7 => "7".Pastel(Color.SaddleBrown).PastelBg(Color.Gray),
             8 => "8".Pastel(Color.LightGray).PastelBg(Color.Gray),
             _ => throw new ArgumentOutOfRangeException(nameof(SurroundingMines),
-                $"{nameof(Tile)}.{nameof(SurroundingMines)} invariant has been violated. Impossible value has been achieved. Value of {nameof(SurroundingMines)}: {SurroundingMines}")
+                                                       $"{nameof(Tile)}.{nameof(SurroundingMines)} invariant has been violated. Impossible value has been achieved. Value of {nameof(SurroundingMines)}: {SurroundingMines}")
         };
     }
 
@@ -155,7 +153,6 @@ internal sealed class Tile : IEquatable<Tile> {
     }
 
     #region Nested type: Masks
-
     private static class Masks {
         public const byte MineMask = 0b1 << 0;
         public const byte MineInverse = 0xFF ^ MineMask;
@@ -167,6 +164,5 @@ internal sealed class Tile : IEquatable<Tile> {
         public const byte SurroundingInverse = 0xFF ^ SurroundingMask;
         public const byte SurroundingOffset = 4;
     }
-
     #endregion
 }

@@ -10,8 +10,7 @@ public static partial class Program {
             Console.Clear();
             ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
             Position = (0, s_minesweeper.RowAmount + 1);
-            Console.WriteLine(
-                $"Mines remaining (according to number of tiles flagged): {s_minesweeper.MineAmount - s_minesweeper.FlagAmount}");
+            Console.WriteLine($"Mines remaining (according to number of tiles flagged): {s_minesweeper.MineAmount - s_minesweeper.FlagAmount}");
             bool validInput = false;
             bool checkingNotFlagging = false;
             do {
@@ -51,8 +50,7 @@ public static partial class Program {
                     continue;
                 }
                 if (!s_minesweeper.IsValidRow(row)) {
-                    WriteStatusMessage(
-                        $"Row input out of the range of the board. Input a number in between 0 and {s_minesweeper.RowAmount - 1}.");
+                    WriteStatusMessage($"Row input out of the range of the board. Input a number in between 0 and {s_minesweeper.RowAmount - 1}.");
                     continue;
                 }
                 validInput = true;
@@ -62,8 +60,7 @@ public static partial class Program {
             int col;
             validInput = false;
             do {
-                Console.Write(
-                    $"Enter column to {(checkingNotFlagging ? "check" : "flag")} (input 'back' to go back): ");
+                Console.Write($"Enter column to {(checkingNotFlagging ? "check" : "flag")} (input 'back' to go back): ");
                 string? input = Console.ReadLine();
                 bool parsed = int.TryParse(input, out col);
                 if (!parsed) {
@@ -74,8 +71,7 @@ public static partial class Program {
                     continue;
                 }
                 if (!s_minesweeper.IsValidColumn(col)) {
-                    WriteStatusMessage(
-                        $"Column input out of the range of the board. Input a number in between 0 and {s_minesweeper.ColumnAmount - 1}.");
+                    WriteStatusMessage($"Column input out of the range of the board. Input a number in between 0 and {s_minesweeper.ColumnAmount - 1}.");
                     continue;
                 }
                 validInput = true;
@@ -83,15 +79,13 @@ public static partial class Program {
             Position = (0, Position.y + 1);
             ConsoleInterface.ClearLastLine();
             if (s_minesweeper.IsChecked(row, col)) {
-                Console.WriteLine(
-                    $"Cannot {(checkingNotFlagging ? "check" : "flag")} a tile which has already been checked. Press any key to retry.");
+                Console.WriteLine($"Cannot {(checkingNotFlagging ? "check" : "flag")} a tile which has already been checked. Press any key to retry.");
                 Console.ReadKey();
                 goto restart_input;
             }
             if (checkingNotFlagging) {
                 if (s_minesweeper.IsFlagged(row, col)) {
-                    Console.WriteLine(
-                        "Cannot check a tile which has been flagged. Unflag the tile if you wish to check it. Press any key to retry.");
+                    Console.WriteLine("Cannot check a tile which has been flagged. Unflag the tile if you wish to check it. Press any key to retry.");
                     Console.ReadKey();
                     goto restart_input;
                 }
@@ -131,17 +125,17 @@ public static partial class Program {
         ConsoleKey currentCheck = ConsoleKey.C;
         ConsoleKey currentFlag = ConsoleKey.F;
         ConsoleElement won = new(0, s_minesweeper.RowAmount + 1,
-            "You found all the mines! You won! Press any key to exit...");
+                                 "You found all the mines! You won! Press any key to exit...");
         ConsoleElement lost = new(0, s_minesweeper.RowAmount + 1,
-            "Oops! You hit a mine! You lost! Press any key to exit...");
+                                  "Oops! You hit a mine! You lost! Press any key to exit...");
         bool playing = true;
         InitializeKeyHandler();
         while (playing) {
             ConsoleElement tutorial = new(0, s_minesweeper.RowAmount + 2,
-                $"Press {currentCheck.ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
+                                          $"Press {currentCheck.ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
             ConsoleInterface.PrintConsoleElement(tutorial);
             ConsoleElement minesRemaining = new(0, s_minesweeper.RowAmount + 1,
-                $"Number of mines remaining (according to flag count): {s_minesweeper.MineAmount - s_minesweeper.FlagAmount}");
+                                                $"Number of mines remaining (according to flag count): {s_minesweeper.MineAmount - s_minesweeper.FlagAmount}");
             ConsoleInterface.PrintConsoleElement(minesRemaining);
             ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
             ConsoleKeyInfo info = Console.ReadKey(true);
@@ -179,9 +173,9 @@ public static partial class Program {
         check_key:
             ConsoleKey newCheck = Console.ReadKey(true).Key;
             if (newCheck is ConsoleKey.RightArrow
-                            or ConsoleKey.UpArrow
-                            or ConsoleKey.LeftArrow
-                            or ConsoleKey.DownArrow) {
+                         or ConsoleKey.UpArrow
+                         or ConsoleKey.LeftArrow
+                         or ConsoleKey.DownArrow) {
                 Console.WriteLine("You cannot rebind check to use the arrow keys. Try again.");
                 Position = (0, Position.y - 1);
                 goto check_key;
@@ -194,9 +188,9 @@ public static partial class Program {
         flag_key:
             ConsoleKey newFlag = Console.ReadKey(true).Key;
             if (newFlag is ConsoleKey.RightArrow
-                           or ConsoleKey.UpArrow
-                           or ConsoleKey.LeftArrow
-                           or ConsoleKey.DownArrow) {
+                        or ConsoleKey.UpArrow
+                        or ConsoleKey.LeftArrow
+                        or ConsoleKey.DownArrow) {
                 Console.WriteLine("You cannot rebind flag to use the arrow keys. Try again.");
                 Position = (0, Position.y - 1);
                 goto flag_key;

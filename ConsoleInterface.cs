@@ -2,9 +2,7 @@ namespace Minesweeper;
 
 internal static class ConsoleInterface {
     #region Delegates
-
     public delegate void KeyHandler();
-
     #endregion
 
     public static readonly Dictionary<ConsoleKey, KeyHandler> KeyHandlerTable = new();

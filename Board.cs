@@ -100,16 +100,16 @@ internal sealed class Board {
         }
         if (tile.IsFlagged) {
             if (!_flaggedTiles.Contains(tile)) {
-                throw new InvalidOperationException(
-                    $"Flagged tile (Tile{tile.Row}, {tile.Column}) not in flagged tile set.");
+                throw new
+                    InvalidOperationException($"Flagged tile (Tile{tile.Row}, {tile.Column}) not in flagged tile set.");
             }
             _flaggedTiles.Remove(tile);
             tile.IsFlagged = false;
         }
         else {
             if (!_flaggedTiles.Add(tile)) {
-                throw new InvalidOperationException(
-                    $"Unflagged tile (Tile{tile.Row}, {tile.Column}) already in flagged tile set.");
+                throw new
+                    InvalidOperationException($"Unflagged tile (Tile{tile.Row}, {tile.Column}) already in flagged tile set.");
             }
             tile.IsFlagged = true;
         }
@@ -180,8 +180,8 @@ internal sealed class Board {
             }
             for (int c = 0; c < ColumnAmount; c++) {
                 output.Append(r == -1
-                    ? c.ToString().PadRight(colLength + boardPadding)
-                    : _board[r, c].ToStringMonochrome().PadRight(colLength + boardPadding));
+                                  ? c.ToString().PadRight(colLength + boardPadding)
+                                  : _board[r, c].ToStringMonochrome().PadRight(colLength + boardPadding));
             }
             if (r != RowAmount - 1) {
                 output.AppendLine();
@@ -215,11 +215,11 @@ internal sealed class Board {
                     // padding width, to maintain consistency with Board.ToString().
                 {
                     output.Append(_board[r, c]
-                                  .ToStringColored()
-                                  .PadRight(colLength +
-                                            boardPadding +
-                                            (_board[r, c].ToStringColored().Length -
-                                             _board[r, c].ToStringMonochrome().Length)));
+                                 .ToStringColored()
+                                 .PadRight(colLength +
+                                           boardPadding +
+                                           (_board[r, c].ToStringColored().Length -
+                                            _board[r, c].ToStringMonochrome().Length)));
                 }
             }
             if (r != RowAmount - 1) {
