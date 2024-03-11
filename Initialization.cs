@@ -130,10 +130,9 @@ public static partial class Program {
             }
             valid = true;
         } while (!valid);
-        if (row * col <= 9) {
+        if (row * col <= 1) {
             Console.Clear();
-            Console.WriteLine(
-                "Number of rows and the number of columns must multiply to be greater than 9. Try again.");
+            Console.WriteLine("Cannot have a one by one board. Try again.");
             goto input_size;
         }
         Position = (0, Position.y + 1);
@@ -147,8 +146,8 @@ public static partial class Program {
                 WriteStatusMessage();
                 continue;
             }
-            if (mines <= 0 || mines >= row * col - 8) {
-                WriteStatusMessage($"Number of mines must be in between 1 and {row * col - 8}. Try again.");
+            if (mines <= 0 || mines >= row * col) {
+                WriteStatusMessage($"Number of mines must be greater than zero and less than {row * col}. Try again.");
                 continue;
             }
             valid = true;
@@ -225,7 +224,6 @@ public static partial class Program {
                 ConsoleInterface.ClearConsoleElement(expandMessage);
                 expandMessage = new ConsoleElement(0, 0,
                     $"Please expand your screen{(SmallWidth() && SmallHeight() ? " both horizontally and vertical" : SmallWidth() ? " horizontal" : " vertical")}ly.");
-
                 ConsoleInterface.PrintConsoleElement(expandMessage);
                 Thread.Sleep(10);
             }

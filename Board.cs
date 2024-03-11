@@ -6,23 +6,21 @@ internal sealed class Board {
     private readonly Tile[,] _board;
     private readonly HashSet<Tile> _flaggedTiles;
     private readonly HashSet<Tile> _minedTiles;
-    private readonly HashSet<Tile> _uncheckedTiles;
     private readonly int? _seed;
+    private readonly HashSet<Tile> _uncheckedTiles;
     private bool _firstCheck = true;
 
     public Board(int row, int col, int mines, int? seed = null) {
         _seed = seed;
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(row, nameof(row));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(col, nameof(col));
-        if (row * col <= 9) {
-            throw new ArgumentException($"{nameof(row)} and {nameof(col)} cannot multiply to be less than 9.");
+        if (row * col <= 1) {
+            throw new ArgumentException("Cannot have a one by one board.");
         }
         RowAmount = row;
         ColumnAmount = col;
-        if (mines <= 0 || mines >= RowAmount * ColumnAmount - 8) {
-            throw new ArgumentOutOfRangeException(nameof(mines),
-                $"{nameof(mines)} must be in between 1 and ({row * col - 8}) exclusive. Valued supplied: {mines}");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(mines, nameof(mines));
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(mines, row * col, nameof(mines));
         MineAmount = mines;
         _board = new Tile[RowAmount, ColumnAmount];
         _uncheckedTiles = new HashSet<Tile>(row * col);
@@ -54,17 +52,24 @@ internal sealed class Board {
         new_tile:
             int randRow = rand.Next(RowAmount);
             int randColumn = rand.Next(ColumnAmount);
-            for (int r = -1; r <= 1; r++) {
-                if (!IsValidRow(r + randRow)) {
-                    continue;
-                }
-                for (int c = -1; c <= 1; c++) {
-                    if (!IsValidColumn(c + randColumn)) {
+            if (MineAmount < RowAmount * ColumnAmount - 8) {
+                for (int r = -1; r <= 1; r++) {
+                    if (!IsValidRow(r + randRow)) {
                         continue;
                     }
-                    if (r + randRow == row && c + randColumn == col) {
-                        goto new_tile;
+                    for (int c = -1; c <= 1; c++) {
+                        if (!IsValidColumn(c + randColumn)) {
+                            continue;
+                        }
+                        if (r + randRow == row && c + randColumn == col) {
+                            goto new_tile;
+                        }
                     }
+                }
+            }
+            else {
+                if (randRow == row && randColumn == col) {
+                    goto new_tile;
                 }
             }
             _minedTiles.Add(_board[randRow, randColumn]);
