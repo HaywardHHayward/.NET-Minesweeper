@@ -29,9 +29,11 @@ public static partial class Program {
             switch (args.Length) {
                 case 5: {
                     HashSet<string> keyboardOneWord =
-                        (from word in KeyboardSet where word.Split([' ', '-']).Length == 1 select word).ToHashSet();
+                        (from word in KeyboardSet.AsParallel() where word.Split([' ', '-']).Length == 1 select word)
+                       .ToHashSet();
                     HashSet<string> textOneWord =
-                        (from word in TextSet where word.Split([' ', '-']).Length == 1 select word).ToHashSet();
+                        (from word in TextSet.AsParallel() where word.Split([' ', '-']).Length == 1 select word)
+                       .ToHashSet();
                     if (ColorSet.Contains(args[3].ToLower())) {
                         cMode = Minesweeper.ColorMode.Colored;
                     }

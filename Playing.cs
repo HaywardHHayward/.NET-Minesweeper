@@ -6,7 +6,6 @@ public static partial class Program {
     private static void TextPlay() {
         while (true) {
         restart_input:
-            Position = StartPosition;
             Console.Clear();
             ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
             Position = (0, s_minesweeper.RowAmount + 1);

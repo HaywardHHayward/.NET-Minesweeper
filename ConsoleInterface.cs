@@ -39,7 +39,7 @@ internal static class ConsoleInterface {
     public static void ClearLastLine() {
         (int, int) originalPosition = CursorPosition;
         CursorPosition = (0, CursorPosition.y - 1);
-        Console.Write(new string(' ', Console.BufferWidth));
+        Console.Write(new string(' ', int.Max(Console.BufferWidth, Console.WindowWidth)));
         CursorPosition = originalPosition;
     }
 
@@ -65,7 +65,7 @@ internal static class ConsoleInterface {
 
     public static void ClearConsoleElement(ConsoleElement element) {
         (int x, int y) originalCursor = CursorPosition;
-        int[] lengthList = element.Message.Split('\n').Select(s => s.Length).ToArray();
+        int[] lengthList = element.Message.Split('\n').AsParallel().Select(s => s.Length).ToArray();
         for (int i = 0; i < lengthList.Length; i++) {
             CursorPosition = (element.ElementX, element.ElementY + i);
             Console.Write(new string(' ', lengthList[i]));
@@ -75,7 +75,7 @@ internal static class ConsoleInterface {
 
     public static void ClearConsoleElement<T>(ConsoleElement<T> element) {
         (int x, int y) originalCursor = CursorPosition;
-        int[] lengthList = element.Message.Split('\n').Select(s => s.Length).ToArray();
+        int[] lengthList = element.Message.Split('\n').AsParallel().Select(s => s.Length).ToArray();
         for (int i = 0; i < lengthList.Length; i++) {
             CursorPosition = (element.ElementX, element.ElementY + i);
             Console.Write(new string(' ', lengthList[i]));

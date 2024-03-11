@@ -1,8 +1,6 @@
 ﻿namespace Minesweeper;
 
 public static partial class Program {
-    private static readonly (int, int) StartPosition = (0, 0);
-
     private static (int x, int y) Position {
         get => ConsoleInterface.CursorPosition;
         set => ConsoleInterface.CursorPosition = value;
@@ -34,13 +32,16 @@ public static partial class Program {
                                    Colored mode: {string.Join(", ", ColorSet)}
                                    Monochrome mode: {string.Join(", ", MonochromeSet)}
                                    Keyboard mode (both in-game and command line argument): {string.Join(", ", from word
-                                                    in KeyboardSet where word.Split([' ', '-']).Length == 1 select word)}
+                                                    in KeyboardSet.AsParallel() where word.Split([' ', '-']).Length == 1 select
+                                                    word)}
                                    Keyboard mode (only in-game): {string.Join(", ", from word
-                                                                                      in KeyboardSet where word.Split([' ', '-']).Length > 1 select word)}
+                                                                                      in KeyboardSet.AsParallel() where word
+                                                                                     .Split([' ', '-']).Length > 1 select word)}
                                    Text mode (both in-game and command line argument): {string.Join(", ", from word
-                                                    in TextSet where word.Split([' ', '-']).Length == 1 select word)}
+                                                    in TextSet.AsParallel() where word.Split([' ', '-']).Length == 1 select word)}
                                    Text mode (only in-game): {string.Join(", ", from word
-                                                                                  in KeyboardSet where word.Split([' ', '-']).Length > 1 select word)}
+                                                                                  in KeyboardSet.AsParallel() where word.Split
+                                                                                  ([' ', '-']).Length > 1 select word)}
                                """);
             return;
         }
@@ -64,11 +65,9 @@ public static partial class Program {
         }
         catch (Exception e) {
             Console.Clear();
-            Position = StartPosition;
             Console.WriteLine($"Minesweeper has experienced a fatal error. Error: {e.Message}\nMinesweeper will now exit following any key press...");
             Console.ReadKey();
         }
-        Position = StartPosition;
         Console.Clear();
     }
 }
