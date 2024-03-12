@@ -71,7 +71,7 @@ internal sealed class Board {
             }
             _minedTiles.Add(_board[randRow, randColumn]);
         }
-        Parallel.ForEach(_minedTiles, tile => {
+        foreach (Tile tile in _minedTiles) {
             tile.IsMine = true;
             for (int i = -1; i <= 1; i++) {
                 if (!IsValidRow(tile.Row + i)) {
@@ -87,7 +87,7 @@ internal sealed class Board {
                     _board[tile.Row + i, tile.Column + j].SurroundingMines++;
                 }
             }
-        });
+        }
     }
 
     public void FlagTile(int row, int col) {
