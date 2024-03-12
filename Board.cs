@@ -151,11 +151,15 @@ internal sealed class Board {
         }
         if (tile is { IsMine: false, SurroundingMines: 0 }) {
             tile.IsChecked = true;
-            _uncheckedTiles.Remove(tile);
+            if (!_uncheckedTiles.Remove(tile)) {
+                throw new InvalidOperationException($"Tile {tile.Row}, {tile.Column} not in unchecked tile set.");
+            }
             CheckSurroundingTiles(row, col);
         }
         else {
-            _uncheckedTiles.Remove(tile);
+            if (!_uncheckedTiles.Remove(tile)) {
+                throw new InvalidOperationException($"Tile {tile.Row}, {tile.Column} not in unchecked tile set.");
+            }
             tile.IsChecked = true;
         }
     }

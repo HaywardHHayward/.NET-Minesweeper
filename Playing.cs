@@ -129,16 +129,25 @@ public static partial class Program {
                                   "Oops! You hit a mine! You lost! Press any key to exit...");
         bool playing = true;
         InitializeKeyHandler();
+        ConsoleKeyInfo info = new('\0', ConsoleKey.None, false, false, false);
         while (playing) {
             ConsoleElement tutorial = new(0, s_minesweeper.RowAmount + 2,
                                           $"Press {currentCheck.ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
-            ConsoleInterface.PrintConsoleElement(tutorial);
             ConsoleElement minesRemaining = new(0, s_minesweeper.RowAmount + 1,
                                                 $"Number of mines remaining (according to flag count): {s_minesweeper.MineAmount - s_minesweeper.FlagAmount}");
-            ConsoleInterface.PrintConsoleElement(minesRemaining);
-            ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
-            ConsoleKeyInfo info = Console.ReadKey(true);
+            if (info.Key == ConsoleKey.None ||
+                info.Key == currentCheck ||
+                info.Key == currentFlag ||
+                info.Key == ConsoleKey.Tab) {
+                ConsoleInterface.PrintConsoleElement(tutorial);
+                ConsoleInterface.PrintConsoleElement(minesRemaining);
+                ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
+            }
+            info = Console.ReadKey(true);
             ConsoleInterface.DoKeyInput(info);
+            if (info.Key != currentCheck && info.Key != currentFlag && info.Key != ConsoleKey.Tab) {
+                continue;
+            }
             ConsoleInterface.ClearConsoleElement(s_minesweeper.ConsoleElement);
             ConsoleInterface.ClearConsoleElement(minesRemaining);
             ConsoleInterface.ClearConsoleElement(tutorial);

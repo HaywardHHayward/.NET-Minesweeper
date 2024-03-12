@@ -73,18 +73,18 @@ public static partial class Program {
 
     private static void Initialization(int[]? boardInputs = null, Minesweeper.ColorMode? cMode = null,
         Minesweeper.InterfaceMode? iMode = null) {
-        if (boardInputs != null) {
+        if (boardInputs is not null) {
             if (boardInputs.Length != 3) {
                 throw new ArgumentOutOfRangeException(nameof(boardInputs),
                                                       $"Board initialization must have three total members. Current count: {boardInputs.Length}");
             }
-            if (cMode != null && iMode != null) {
+            if (cMode is not null && iMode is not null) {
                 s_minesweeper = new Minesweeper(boardInputs[0], boardInputs[1], boardInputs[2], cMode.Value,
                                                 iMode.Value);
                 return;
             }
-            if ((cMode != null && iMode == null) || (cMode == null && iMode != null)) {
-                throw new ArgumentNullException(cMode != null ? nameof(iMode) : nameof(cMode),
+            if ((cMode is not null && iMode is null) || (cMode is null && iMode is not null)) {
+                throw new ArgumentNullException(cMode is not null ? nameof(iMode) : nameof(cMode),
                                                 "Both mode values must be provided.");
             }
             (cMode, iMode) = InterfaceInitialization();
@@ -92,7 +92,7 @@ public static partial class Program {
             return;
         }
         (int row, int col, int mines) = BoardInitialization();
-        if (cMode != null || iMode != null) {
+        if (cMode is not null || iMode is not null) {
             throw new ArgumentNullException(nameof(boardInputs));
         }
         (cMode, iMode) = InterfaceInitialization();
