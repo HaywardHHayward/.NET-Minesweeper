@@ -135,17 +135,14 @@ public static partial class Program {
                                           $"Press {currentCheck.ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
             ConsoleElement minesRemaining = new(0, s_minesweeper.RowAmount + 1,
                                                 $"Number of mines remaining (according to flag count): {s_minesweeper.MineAmount - s_minesweeper.FlagAmount}");
-            if (info.Key == ConsoleKey.None ||
-                info.Key == currentCheck ||
-                info.Key == currentFlag ||
-                info.Key == ConsoleKey.Tab) {
+            if (info.Key is ConsoleKey.None or ConsoleKey.Tab || info.Key == currentCheck || info.Key == currentFlag) {
                 ConsoleInterface.PrintConsoleElement(tutorial);
                 ConsoleInterface.PrintConsoleElement(minesRemaining);
                 ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
             }
             info = Console.ReadKey(true);
             ConsoleInterface.DoKeyInput(info);
-            if (info.Key != currentCheck && info.Key != currentFlag && info.Key != ConsoleKey.Tab) {
+            if (info.Key is not ConsoleKey.Tab && info.Key != currentCheck && info.Key != currentFlag) {
                 continue;
             }
             ConsoleInterface.ClearConsoleElement(s_minesweeper.ConsoleElement);

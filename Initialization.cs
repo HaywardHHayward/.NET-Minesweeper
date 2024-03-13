@@ -2,7 +2,6 @@ namespace Minesweeper;
 
 public static partial class Program {
     private static readonly HashSet<string> ColorSet = ["colored", "color", "c", "coloured", "colour"];
-
     private static readonly HashSet<string> MonochromeSet = ["monochrome", "mono", "m", "bw"];
 
     private static readonly HashSet<string> KeyboardSet = [

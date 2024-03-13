@@ -9,7 +9,6 @@ internal sealed class Board {
     private readonly int? _seed;
     private readonly HashSet<Tile> _uncheckedTiles;
     private bool _firstCheck = true;
-
     public bool FoundAllMines => _minedTiles.SetEquals(_uncheckedTiles);
     public int RowAmount { get; }
     public int ColumnAmount { get; }

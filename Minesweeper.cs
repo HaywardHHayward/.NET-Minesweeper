@@ -18,7 +18,6 @@ internal sealed class Minesweeper {
     public readonly InterfaceMode GameInterfaceMode;
     public bool LostGame;
     public bool WonGame;
-
     public int RowAmount => _board.RowAmount;
     public int ColumnAmount => _board.ColumnAmount;
     public int MineAmount => _board.MineAmount;

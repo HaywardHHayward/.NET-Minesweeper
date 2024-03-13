@@ -5,7 +5,6 @@ namespace Minesweeper;
 
 internal sealed class Tile : IEquatable<Tile> {
     private readonly int _column;
-
     private readonly int _row;
 
     // A byte representing the properties of a tile, the three least significant bits represent
