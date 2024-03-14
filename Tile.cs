@@ -80,7 +80,7 @@ internal sealed class Tile : IEquatable<Tile> {
     }
 
     public bool Equals(Tile? other) {
-        return other != null &&
+        return other is not null &&
                _column == other._column &&
                _row == other._row &&
                _tileProperties == other._tileProperties;

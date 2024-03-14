@@ -106,10 +106,7 @@ internal sealed class Board {
             _firstCheck = false;
         }
         Tile tile = _board[row, col];
-        if (tile.IsChecked) {
-            return;
-        }
-        if (tile.IsFlagged) {
+        if (tile.IsChecked || tile.IsFlagged) {
             return;
         }
         if (tile is { IsMine: false, SurroundingMines: 0 }) {
