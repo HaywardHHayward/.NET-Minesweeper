@@ -49,17 +49,9 @@ internal sealed class Board {
             int randRow = rand.Next(RowAmount);
             int randColumn = rand.Next(ColumnAmount);
             if (MineAmount < RowAmount * ColumnAmount - 8) {
-                for (int r = -1; r <= 1; r++) {
-                    if (!IsValidRow(r + randRow)) {
-                        continue;
-                    }
-                    for (int c = -1; c <= 1; c++) {
-                        if (!IsValidColumn(c + randColumn)) {
-                            continue;
-                        }
-                        if (r + randRow == row && c + randColumn == col) {
-                            goto new_tile;
-                        }
+                foreach (Tile tile in SurroundingTiles(randRow, randColumn)) {
+                    if (tile.Row + randRow == row && tile.Column + randColumn == col) {
+                        goto new_tile;
                     }
                 }
             }
@@ -70,21 +62,10 @@ internal sealed class Board {
             }
             _minedTiles.Add(_board[randRow, randColumn]);
         }
-        foreach (Tile tile in _minedTiles) {
-            tile.IsMine = true;
-            for (int i = -1; i <= 1; i++) {
-                if (!IsValidRow(tile.Row + i)) {
-                    continue;
-                }
-                for (int j = -1; j <= 1; j++) {
-                    if (!IsValidColumn(tile.Column + j)) {
-                        continue;
-                    }
-                    if (i == 0 && j == 0) {
-                        continue;
-                    }
-                    _board[tile.Row + i, tile.Column + j].SurroundingMines++;
-                }
+        foreach (Tile mine in _minedTiles) {
+            mine.IsMine = true;
+            foreach (Tile tile in SurroundingTiles(mine.Row, mine.Column)) {
+                tile.SurroundingMines++;
             }
         }
     }
@@ -119,23 +100,6 @@ internal sealed class Board {
         return col >= 0 && col < ColumnAmount;
     }
 
-    private void CheckSurroundingTiles(int row, int col) {
-        for (int r = -1; r <= 1; r++) {
-            if (!IsValidRow(row + r)) {
-                continue;
-            }
-            for (int c = -1; c <= 1; c++) {
-                if (!IsValidColumn(col + c)) {
-                    continue;
-                }
-                if (r == 0 && c == 0) {
-                    continue;
-                }
-                CheckTile(row + r, col + c);
-            }
-        }
-    }
-
     public void CheckTile(int row, int col) {
         if (_firstCheck) {
             SetAllMines(row, col);
@@ -153,7 +117,9 @@ internal sealed class Board {
             if (!_uncheckedTiles.Remove(tile)) {
                 throw new InvalidOperationException($"Tile {tile.Row}, {tile.Column} not in unchecked tile set.");
             }
-            CheckSurroundingTiles(row, col);
+            foreach (Tile tile1 in SurroundingTiles(row, col)) {
+                CheckTile(tile1.Row, tile1.Column);
+            }
         }
         else {
             if (!_uncheckedTiles.Remove(tile)) {
@@ -253,5 +219,24 @@ internal sealed class Board {
             }
         }
         return output.ToString();
+    }
+
+    private IEnumerable<Tile> SurroundingTiles(int row, int col) {
+        List<Tile> surroundingTiles = new(8);
+        for (int r = -1; r <= 1; r++) {
+            if (!IsValidRow(r + row)) {
+                continue;
+            }
+            for (int c = -1; c <= 1; c++) {
+                if (!IsValidColumn(c + col)) {
+                    continue;
+                }
+                if (r == 0 && c == 0) {
+                    continue;
+                }
+                surroundingTiles.Add(_board[row + r, col + c]);
+            }
+        }
+        return surroundingTiles.AsEnumerable();
     }
 }
