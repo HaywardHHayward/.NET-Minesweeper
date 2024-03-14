@@ -45,20 +45,23 @@ internal sealed class Board {
     private void SetAllMines(int row, int col) {
         Random rand = _seed.HasValue ? new Random(_seed.Value) : new Random();
         while (_minedTiles.Count < MineAmount) {
-        new_tile:
             int randRow = rand.Next(RowAmount);
             int randColumn = rand.Next(ColumnAmount);
+            bool validMine = true;
             if (MineAmount < RowAmount * ColumnAmount - 8) {
                 foreach (Tile tile in SurroundingTiles(randRow, randColumn)) {
                     if (tile.Row + randRow == row && tile.Column + randColumn == col) {
-                        goto new_tile;
+                        validMine = false;
                     }
                 }
             }
             else {
                 if (randRow == row && randColumn == col) {
-                    goto new_tile;
+                    continue;
                 }
+            }
+            if (!validMine) {
+                continue;
             }
             _minedTiles.Add(_board[randRow, randColumn]);
         }

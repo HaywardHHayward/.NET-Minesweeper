@@ -43,7 +43,7 @@ internal static class ConsoleInterface {
         CursorPosition = originalPosition;
     }
 
-    public static void PrintConsoleElement(ConsoleElement element) {
+    public static void PrintConsoleElement(IElement element) {
         (int x, int y) originalCursor = CursorPosition;
         string[] stringList = element.Message.Split('\n').ToArray();
         for (int i = 0; i < stringList.Length; i++) {
@@ -53,17 +53,13 @@ internal static class ConsoleInterface {
         CursorPosition = originalCursor;
     }
 
-    public static void PrintConsoleElement<T>(ConsoleElement<T> element) {
-        (int x, int y) originalCursor = CursorPosition;
-        string[] stringList = element.Message.Split('\n').ToArray();
-        for (int i = 0; i < stringList.Length; i++) {
-            CursorPosition = (element.ElementX, element.ElementY + i);
-            Console.Write(stringList[i]);
+    public static void PrintConsoleElements(IEnumerable<IElement> elements) {
+        foreach (IElement element in elements) {
+            PrintConsoleElement(element);
         }
-        CursorPosition = originalCursor;
     }
 
-    public static void ClearConsoleElement(ConsoleElement element) {
+    public static void ClearConsoleElement(IElement element) {
         (int x, int y) originalCursor = CursorPosition;
         int[] lengthList = element.Message.Split('\n').AsParallel().Select(s => s.Length).ToArray();
         for (int i = 0; i < lengthList.Length; i++) {
@@ -73,13 +69,9 @@ internal static class ConsoleInterface {
         CursorPosition = originalCursor;
     }
 
-    public static void ClearConsoleElement<T>(ConsoleElement<T> element) {
-        (int x, int y) originalCursor = CursorPosition;
-        int[] lengthList = element.Message.Split('\n').AsParallel().Select(s => s.Length).ToArray();
-        for (int i = 0; i < lengthList.Length; i++) {
-            CursorPosition = (element.ElementX, element.ElementY + i);
-            Console.Write(new string(' ', lengthList[i]));
+    public static void ClearConsoleElements(IEnumerable<IElement> elements) {
+        foreach (IElement element in elements) {
+            ClearConsoleElement(element);
         }
-        CursorPosition = originalCursor;
     }
 }

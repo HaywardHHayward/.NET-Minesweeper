@@ -136,21 +136,16 @@ public static partial class Program {
             ConsoleElement minesRemaining = new(0, s_minesweeper.RowAmount + 1,
                                                 $"Number of mines remaining (according to flag count): {s_minesweeper.MineAmount - s_minesweeper.FlagAmount}");
             if (info.Key is ConsoleKey.None or ConsoleKey.Tab || info.Key == currentCheck || info.Key == currentFlag) {
-                ConsoleInterface.PrintConsoleElement(tutorial);
-                ConsoleInterface.PrintConsoleElement(minesRemaining);
-                ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
+                ConsoleInterface.PrintConsoleElements([tutorial, minesRemaining, s_minesweeper.ConsoleElement]);
             }
             info = Console.ReadKey(true);
             ConsoleInterface.DoKeyInput(info);
             if (info.Key is not ConsoleKey.Tab && info.Key != currentCheck && info.Key != currentFlag) {
                 continue;
             }
-            ConsoleInterface.ClearConsoleElement(s_minesweeper.ConsoleElement);
-            ConsoleInterface.ClearConsoleElement(minesRemaining);
-            ConsoleInterface.ClearConsoleElement(tutorial);
+            ConsoleInterface.ClearConsoleElements([s_minesweeper.ConsoleElement, minesRemaining, tutorial]);
         }
-        ConsoleInterface.PrintConsoleElement(s_minesweeper.ConsoleElement);
-        ConsoleInterface.PrintConsoleElement(s_minesweeper.WonGame ? won : lost);
+        ConsoleInterface.PrintConsoleElements([s_minesweeper.ConsoleElement, s_minesweeper.WonGame ? won : lost]);
         Console.ReadKey();
         return;
 
