@@ -1,3 +1,5 @@
+using static System.ConsoleKey;
+
 namespace Minesweeper;
 
 public static partial class Program {
@@ -63,7 +65,7 @@ public static partial class Program {
                 string? input = Console.ReadLine();
                 bool parsed = int.TryParse(input, out col);
                 if (!parsed) {
-                    if (input == "back") {
+                    if (input is "back" or "b") {
                         goto restart_input;
                     }
                     WriteStatusMessage("Invalid input. Enter a nonnegative integer.");
@@ -121,26 +123,26 @@ public static partial class Program {
     }
 
     private static void KeyboardPlay() {
-        ConsoleKey currentCheck = ConsoleKey.C;
-        ConsoleKey currentFlag = ConsoleKey.F;
+        ConsoleKey currentCheck = C;
+        ConsoleKey currentFlag = F;
         ConsoleElement won = new(0, s_minesweeper.RowAmount + 1,
                                  "You found all the mines! You won! Press any key to exit...");
         ConsoleElement lost = new(0, s_minesweeper.RowAmount + 1,
                                   "Oops! You hit a mine! You lost! Press any key to exit...");
         bool playing = true;
         InitializeKeyHandler();
-        ConsoleKeyInfo info = new('\0', ConsoleKey.None, false, false, false);
+        ConsoleKeyInfo info = new('\0', None, false, false, false);
         while (playing) {
             ConsoleElement tutorial = new(0, s_minesweeper.RowAmount + 2,
                                           $"Press {currentCheck.ToString()} to check and {currentFlag.ToString()} to flag. Press TAB to rebind keys.");
             ConsoleElement minesRemaining = new(0, s_minesweeper.RowAmount + 1,
                                                 $"Number of mines remaining (according to flag count): {s_minesweeper.MineAmount - s_minesweeper.FlagAmount}");
-            if (info.Key is ConsoleKey.None or ConsoleKey.Tab || info.Key == currentCheck || info.Key == currentFlag) {
+            if (info.Key is None or Tab || info.Key == currentCheck || info.Key == currentFlag) {
                 ConsoleInterface.PrintConsoleElements([tutorial, minesRemaining, s_minesweeper.ConsoleElement]);
             }
             info = Console.ReadKey(true);
             ConsoleInterface.DoKeyInput(info);
-            if (info.Key is not ConsoleKey.Tab && info.Key != currentCheck && info.Key != currentFlag) {
+            if (info.Key is not Tab && info.Key != currentCheck && info.Key != currentFlag) {
                 continue;
             }
             ConsoleInterface.ClearConsoleElements([s_minesweeper.ConsoleElement, minesRemaining, tutorial]);
@@ -150,21 +152,21 @@ public static partial class Program {
         return;
 
         void InitializeKeyHandler() {
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.LeftArrow] = () => Position = (Position.x - 2, Position.y);
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.A] = () => Position = (Position.x - 2, Position.y);
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.RightArrow] = () =>
+            ConsoleInterface.KeyHandlerTable[LeftArrow] = () => Position = (Position.x - 2, Position.y);
+            ConsoleInterface.KeyHandlerTable[A] = () => Position = (Position.x - 2, Position.y);
+            ConsoleInterface.KeyHandlerTable[RightArrow] = () =>
                 Position = (int.Min(Position.x + 2, (s_minesweeper.ColumnAmount - 1) * 2), Position.y);
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.D] = () =>
+            ConsoleInterface.KeyHandlerTable[D] = () =>
                 Position = (int.Min(Position.x + 2, (s_minesweeper.ColumnAmount - 1) * 2), Position.y);
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.UpArrow] = () => Position = (Position.x, Position.y - 1);
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.W] = () => Position = (Position.x, Position.y - 1);
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.DownArrow] = () =>
+            ConsoleInterface.KeyHandlerTable[UpArrow] = () => Position = (Position.x, Position.y - 1);
+            ConsoleInterface.KeyHandlerTable[W] = () => Position = (Position.x, Position.y - 1);
+            ConsoleInterface.KeyHandlerTable[DownArrow] = () =>
                 Position = (Position.x, int.Min(Position.y + 1, s_minesweeper.RowAmount - 1));
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.D] = () =>
+            ConsoleInterface.KeyHandlerTable[D] = () =>
                 Position = (Position.x, int.Min(Position.y + 1, s_minesweeper.RowAmount - 1));
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.C] = CheckTile;
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.F] = FlagTile;
-            ConsoleInterface.KeyHandlerTable[ConsoleKey.Tab] = ChangeCheckAndFlag;
+            ConsoleInterface.KeyHandlerTable[C] = CheckTile;
+            ConsoleInterface.KeyHandlerTable[F] = FlagTile;
+            ConsoleInterface.KeyHandlerTable[Tab] = ChangeCheckAndFlag;
         }
 
         void ChangeCheckAndFlag() {
@@ -172,10 +174,7 @@ public static partial class Program {
             Console.WriteLine("Press the key you wish to use to check tiles.");
         check_key:
             ConsoleKey newCheck = Console.ReadKey(true).Key;
-            if (newCheck is ConsoleKey.RightArrow
-                         or ConsoleKey.UpArrow
-                         or ConsoleKey.LeftArrow
-                         or ConsoleKey.DownArrow) {
+            if (newCheck is RightArrow or UpArrow or LeftArrow or DownArrow) {
                 Console.WriteLine("You cannot rebind check to use the arrow keys. Try again.");
                 Position = (0, Position.y - 1);
                 goto check_key;
@@ -187,10 +186,7 @@ public static partial class Program {
             Console.WriteLine("Press the key you wish to use to flag tiles.");
         flag_key:
             ConsoleKey newFlag = Console.ReadKey(true).Key;
-            if (newFlag is ConsoleKey.RightArrow
-                        or ConsoleKey.UpArrow
-                        or ConsoleKey.LeftArrow
-                        or ConsoleKey.DownArrow) {
+            if (newFlag is RightArrow or UpArrow or LeftArrow or DownArrow) {
                 Console.WriteLine("You cannot rebind flag to use the arrow keys. Try again.");
                 Position = (0, Position.y - 1);
                 goto flag_key;

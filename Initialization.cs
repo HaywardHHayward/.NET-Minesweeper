@@ -1,3 +1,5 @@
+using static Minesweeper.Minesweeper;
+
 namespace Minesweeper;
 
 public static partial class Program {
@@ -15,8 +17,8 @@ public static partial class Program {
 
     private static void InitializeWithArgs(string[] args) {
         int[] boardInputs = new int[3];
-        Minesweeper.ColorMode cMode;
-        Minesweeper.InterfaceMode iMode;
+        ColorMode cMode;
+        InterfaceMode iMode;
         if (args.Length >= 3) {
             for (int i = 0; i < 3; i++) {
                 bool result = int.TryParse(args[i], out boardInputs[i]);
@@ -34,20 +36,20 @@ public static partial class Program {
                         (from word in TextSet.AsParallel() where word.Split([' ', '-']).Length == 1 select word)
                        .ToHashSet();
                     if (ColorSet.Contains(args[3].ToLower())) {
-                        cMode = Minesweeper.ColorMode.Colored;
+                        cMode = ColorMode.Colored;
                     }
                     else if (MonochromeSet.Contains(args[3].ToLower())) {
-                        cMode = Minesweeper.ColorMode.Monochrome;
+                        cMode = ColorMode.Monochrome;
                     }
                     else {
                         throw new
                             ArgumentException($"Invalid argument(s). Failed to initialize ColorMode. Input: {args[3]}");
                     }
                     if (keyboardOneWord.Contains(args[4].ToLower())) {
-                        iMode = Minesweeper.InterfaceMode.Keyboard;
+                        iMode = InterfaceMode.Keyboard;
                     }
                     else if (textOneWord.Contains(args[4].ToLower())) {
-                        iMode = Minesweeper.InterfaceMode.Text;
+                        iMode = InterfaceMode.Text;
                     }
                     else {
                         throw new
@@ -70,8 +72,8 @@ public static partial class Program {
         Initialization(boardInputs, cMode, iMode);
     }
 
-    private static void Initialization(int[]? boardInputs = null, Minesweeper.ColorMode? cMode = null,
-        Minesweeper.InterfaceMode? iMode = null) {
+    private static void Initialization(int[]? boardInputs = null, ColorMode? cMode = null,
+        InterfaceMode? iMode = null) {
         if (boardInputs is not null) {
             if (boardInputs.Length != 3) {
                 throw new ArgumentOutOfRangeException(nameof(boardInputs),
@@ -169,18 +171,18 @@ public static partial class Program {
         Position = (0, Position.y - 1);
     }
 
-    private static (Minesweeper.ColorMode, Minesweeper.InterfaceMode) InterfaceInitialization() {
+    private static (ColorMode, InterfaceMode) InterfaceInitialization() {
         bool validColor = false;
-        Minesweeper.ColorMode color = Minesweeper.ColorMode.None;
+        ColorMode color = ColorMode.None;
         do {
             Console.Write("Input desired color mode (colored/monochrome): ");
             string colorInput = Console.ReadLine()?.ToLower() ?? string.Empty;
             if (ColorSet.Contains(colorInput)) {
-                color = Minesweeper.ColorMode.Colored;
+                color = ColorMode.Colored;
                 validColor = true;
             }
             else if (MonochromeSet.Contains(colorInput)) {
-                color = Minesweeper.ColorMode.Monochrome;
+                color = ColorMode.Monochrome;
                 validColor = true;
             }
             else {
@@ -189,17 +191,17 @@ public static partial class Program {
         } while (!validColor);
         Position = (0, Position.y + 1);
         ConsoleInterface.ClearLastLine();
-        Minesweeper.InterfaceMode interf = Minesweeper.InterfaceMode.None;
+        InterfaceMode interf = InterfaceMode.None;
         bool validInterf = false;
         do {
             Console.Write("Input desired interface mode (text-based/keyboard-based): ");
             string interfInput = Console.ReadLine()?.ToLower() ?? string.Empty;
             if (KeyboardSet.Contains(interfInput)) {
-                interf = Minesweeper.InterfaceMode.Keyboard;
+                interf = InterfaceMode.Keyboard;
                 validInterf = true;
             }
             else if (TextSet.Contains(interfInput)) {
-                interf = Minesweeper.InterfaceMode.Text;
+                interf = InterfaceMode.Text;
                 validInterf = true;
             }
             else {
@@ -211,7 +213,7 @@ public static partial class Program {
 
     private static void EnsureWindowSize() {
         ConsoleElement expandMessage = new(0, 0, "");
-        if (s_minesweeper.GameInterfaceMode == Minesweeper.InterfaceMode.Text) {
+        if (s_minesweeper.GameInterfaceMode == InterfaceMode.Text) {
             bool SmallWidth() {
                 return Console.WindowWidth <
                        int.Max(80, s_minesweeper.ColumnAmount * (s_minesweeper.ColumnAmount - 2).ToString().Length + 1);

@@ -138,14 +138,6 @@ internal sealed class Tile : IEquatable<Tile> {
         };
     }
 
-    public static bool operator ==(Tile? left, Tile? right) {
-        return Equals(left, right);
-    }
-
-    public static bool operator !=(Tile? left, Tile? right) {
-        return !Equals(left, right);
-    }
-
     private static class Masks {
         public const byte MineMask = 0b1 << 0;
         public const byte MineInverse = 0xFF ^ MineMask;
