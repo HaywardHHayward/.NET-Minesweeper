@@ -50,17 +50,15 @@ internal sealed class Board {
             bool validMine = true;
             if (MineAmount < RowAmount * ColumnAmount - 8) {
                 foreach (Tile tile in SurroundingTiles(randRow, randColumn)) {
-                    if (tile.Row + randRow == row && tile.Column + randColumn == col) {
+                    if (tile.Row == row && tile.Column == col) {
                         validMine = false;
                     }
                 }
-            }
-            else {
-                if (randRow == row && randColumn == col) {
+                if (!validMine) {
                     continue;
                 }
             }
-            if (!validMine) {
+            if (randRow == row && randColumn == col) {
                 continue;
             }
             _minedTiles.Add(_board[randRow, randColumn]);

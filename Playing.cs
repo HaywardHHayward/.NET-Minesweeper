@@ -44,7 +44,7 @@ public static partial class Program {
                 string? input = Console.ReadLine();
                 bool parsed = int.TryParse(input, out row);
                 if (!parsed) {
-                    if (input == "back") {
+                    if (input is "back" or "b") {
                         goto restart_input;
                     }
                     WriteStatusMessage("Invalid input. Enter a nonnegative integer.");
