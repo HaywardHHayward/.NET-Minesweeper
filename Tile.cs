@@ -7,10 +7,10 @@ internal sealed class Tile : IEquatable<Tile> {
     private readonly int _column;
     private readonly int _row;
 
-    // A byte representing the properties of a tile, the three least significant bits represent
-    // whether the tile is a mine, is checked, or has been flagged from least to most significant
-    // respectively. Then the four most significant bits represent how many mines are surrounding
-    // the tile with a straight conversion, i.e. 0b0000 is zero, 0b0001 is one, so on and so forth.
+    /* A byte representing the properties of a tile, the three least significant bits represent
+    whether the tile is a mine, is checked, or has been flagged from least to most significant
+    respectively. Then the four most significant bits represent how many mines are surrounding
+    the tile with a straight conversion, i.e. 0b0000 is zero, 0b0001 is one, so on and so forth. */
     private byte _tileProperties;
 
     public int Row {

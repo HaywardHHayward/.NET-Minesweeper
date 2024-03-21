@@ -129,9 +129,9 @@ internal sealed class Board {
 
     public string ToStringMonochromeText() {
         int rowLength = (RowAmount - 1).ToString().Length;
-        // Subtracting by two because when only the last digit is longer that the previous digits, we can just use
-        // the previous digits length since only the last character would benefit from the expanded padding.
-        // We can do this by subtracting two from the ColumnAmount, since it'll skip over the last value.
+        /* Subtracting by two because when only the last digit is longer that the previous digits, we can just use
+        the previous digits length since only the last character would benefit from the expanded padding.
+        We can do this by subtracting two from the ColumnAmount, since it'll skip over the last value. */
         int colLength = int.Max(ColumnAmount - 2, 0).ToString().Length;
         const int boardPadding = 1;
         StringBuilder output = new();
@@ -156,9 +156,9 @@ internal sealed class Board {
 
     public string ToStringColoredText() {
         int rowLength = (RowAmount - 1).ToString().Length;
-        // Subtracting by two because when only the last digit is longer that the previous digits, we can just use
-        // the previous digits length since only the last character would benefit from the expanded padding.
-        // We can do this by subtracting two from the ColumnAmount, since it'll skip over the last value.
+        /* Subtracting by two because when only the last digit is longer that the previous digits, we can just use
+        the previous digits length since only the last character would benefit from the expanded padding.
+        We can do this by subtracting two from the ColumnAmount, since it'll skip over the last value. */
         int colLength = int.Max(ColumnAmount - 2, 0).ToString().Length;
         const int boardPadding = 1;
         StringBuilder output = new();
@@ -174,10 +174,9 @@ internal sealed class Board {
                     output.Append(c.ToString().PadRight(colLength + boardPadding));
                 }
                 else
-                    // Pastel adds extra characters to the string, which we need to account for when formatting,
-                    // which is why we add Tile.ToStringColored().Length - Tile.ToString().Length to the 
-                    // padding width, to maintain consistency with Board.ToString().
-                {
+                    /* Pastel adds extra characters to the string, which we need to account for when formatting,
+                    which is why we add Tile.ToStringColored().Length - Tile.ToString().Length to the
+                    padding width, to maintain consistency with Board.ToString() .*/ {
                     output.Append(_board[r, c]
                                  .ToStringColored()
                                  .PadRight(colLength +
