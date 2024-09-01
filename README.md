@@ -1,1 +1,0 @@
-This program uses the C# library [Pastel](https://github.com/silkfire/Pastel) by [Gabriel Bider](https://github.com/silkfire), which is licensed under the MIT License, a copy of which can be found [here](license/PASTEL.txt). 
