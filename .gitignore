@@ -2,3 +2,5 @@
 /src/Minesweeper/obj
 /tests/MinesweeperTests/bin
 /tests/MinesweeperTests/obj
+/.idea
+Minesweeper.sln.DotSettings.user

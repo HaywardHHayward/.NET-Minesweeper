@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Minesweeper\Minesweeper.csproj" />
+        <ProjectReference Include="..\..\src\Minesweeper\Minesweeper.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,3 +1,9 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿// Hayden Reckward (c) 2024
 
-Console.WriteLine("Hello, World!");
+namespace Minesweeper;
+
+internal static class Program {
+    internal static void Main() {
+        Console.WriteLine("Hello World!");
+    }
+}
